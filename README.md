@@ -22,7 +22,7 @@ Code is located under the fwk folder. As of now there are utilities covering mor
 
 
 #### To be implemented
-* Spacial grid handling
+* Spatial grid handling
 
 
 #### Test suite
