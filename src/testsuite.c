@@ -7,11 +7,12 @@
 
 #include "../inc/testsuite.h"
 
-#include <genesis.h>
+#include <tools.h>
 
-#include "../inc/elements.h"
+#include "../inc/fwk/assert.h"
 
 void runTest(const Config* config) {
 
 	KLog_U1("Test ", config->mode);
+	assert(config->mode == 0, "Invalid mode");
 }
