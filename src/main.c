@@ -10,6 +10,7 @@
 #include "../inc/config.h"
 #include "../inc/elements.h"
 #include "../inc/fwk/vdp_utils.h"
+#include "../inc/testsuite.h"
 #include "../inc/yamdl_file.h"
 
 //#include "../inc/fwk/logger.h"
@@ -36,7 +37,8 @@ int main(u16 hard) {
 	while (1) {
 
 		// log_memory();
-		Config config = setUpTest();
+		const Config* config = setUpTest();
+		runTest(config);
 
 		VDP_waitVSync();
 	}

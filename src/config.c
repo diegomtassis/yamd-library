@@ -53,7 +53,7 @@ void initConfig() {
 	current_config = 0;
 }
 
-Config setUpTest() {
+const Config* setUpTest() {
 
 	setUpDefaults();
 
@@ -83,7 +83,7 @@ Config setUpTest() {
 	clearConfigScreen();
 	VDP_setTextPriority(prev_priority);
 
-	return *current_config;
+	return current_config;
 }
 
 static void setUpDefaults() {

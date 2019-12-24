@@ -16,6 +16,6 @@ typedef enum {
 } Utility;
 
 void initConfig();
-Config setUpTest();
+const Config* setUpTest();
 
 #endif /* INC_CONFIG_H_ */
