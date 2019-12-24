@@ -11,7 +11,7 @@
 #include "elements.h"
 
 typedef enum {
-	COLLISIONS, //
+	COLLISIONS = 1, //
 	LISTS, //
 } Utility;
 

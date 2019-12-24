@@ -13,7 +13,7 @@
 typedef struct Config Config;
 
 struct Config {
-	u8 mode;
+	u8 test;
 };
 
 #endif /* INC_ELEMENTS_H_ */

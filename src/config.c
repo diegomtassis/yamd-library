@@ -61,7 +61,7 @@ const Config* setUpTest() {
 
 	if (!current_config) {
 		current_config = MEM_calloc(sizeof(*current_config));
-		current_config->mode = COLLISIONS;
+		current_config->test = COLLISIONS;
 	}
 
 	current_option = OPTION_TEST;
@@ -126,7 +126,7 @@ static void displayConfig(Config config, V2u16 pos) {
 
 static const char* printableMode(Config config) {
 
-	switch (config.mode) {
+	switch (config.test) {
 	case COLLISIONS:
 		return TEXT_PHYSICS;
 	default:
@@ -136,10 +136,10 @@ static const char* printableMode(Config config) {
 
 static void changeMode(Config config[static 1]) {
 
-	if (config->mode == LISTS) {
-		config->mode = COLLISIONS;
+	if (config->test == LISTS) {
+		config->test = COLLISIONS;
 	} else {
-		config->mode++;
+		config->test++;
 	}
 }
 

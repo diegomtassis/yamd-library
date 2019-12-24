@@ -5,11 +5,11 @@
  *      Author: diegomtassis
  */
 
-#ifndef INC_TESTSUITE_H_
-#define INC_TESTSUITE_H_
+#ifndef INC_TEST_SUITE_H_
+#define INC_TEST_SUITE_H_
 
 #include "elements.h"
 
 void runTest(const Config* config);
 
-#endif /* INC_TESTSUITE_H_ */
+#endif /* INC_TEST_SUITE_H_ */

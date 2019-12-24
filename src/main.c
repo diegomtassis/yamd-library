@@ -10,7 +10,7 @@
 #include "../inc/config.h"
 #include "../inc/elements.h"
 #include "../inc/fwk/vdp_utils.h"
-#include "../inc/testsuite.h"
+#include "../inc/test_suite.h"
 #include "../inc/yamdl_file.h"
 
 //#include "../inc/fwk/logger.h"
