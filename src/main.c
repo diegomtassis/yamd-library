@@ -7,7 +7,7 @@
 
 #include <genesis.h>
 
-#include "../inc/fwk/vdp_utils.h"
+#include "../inc/yamdl_file.h"
 
 //#include "../inc/fwk/logger.h"
 
@@ -15,14 +15,16 @@
 
 int main(u16 hard) {
 
-	// default resolution
-	VDP_setScreenWidth256();
+	VDP_setScreenWidth320();
 	VDP_setScreenHeight224();
 
 	if (hard) {
+		printDisclaimer();
+		JOY_waitPress(JOY_1, BUTTON_BTN);
+		clearDisclaimer();
 
+		waitMs(50);
 	}
-
 
 	while (1) {
 

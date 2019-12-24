@@ -21,23 +21,17 @@ void printDisclaimer() {
 	printerOn();
 	waitMs(WAIT_MS_BEFORE);
 
-	print("Video Game Program: JetPac MD", &pos);
+	print("Program: YAMD-library test", &pos);
 	waitMs(WAIT_MS_BETWEEN);
 
 	println("", &pos);
 	println("", &pos);
-	println("Port by Diego Martin, 2019", &pos);
+	print("Written by Diego Martin, 2019", &pos);
+	waitMs(WAIT_MS_BETWEEN);
+
+	println("", &pos);
+	println("", &pos);
 	print("Work in progress", &pos);
-	waitMs(WAIT_MS_BETWEEN);
-
-	println("", &pos);
-	println("", &pos);
-	print("Original program written by Tim and Chris Stamper, 1983", &pos);
-	waitMs(WAIT_MS_BETWEEN);
-
-	println("", &pos);
-	println("", &pos);
-	print("JetPac is an Ultimate Play the Game / RARE property", &pos);
 	waitMs(WAIT_MS_BETWEEN);
 
 	println("", &pos);
