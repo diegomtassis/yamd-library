@@ -1,13 +1,21 @@
 /*
  * config.h
  *
- *  Created on: May 5, 2019
+ *  Created on: Dec 24, 2019
  *      Author: diegomtassis
  */
 
 #ifndef INC_CONFIG_H_
 #define INC_CONFIG_H_
 
-#include <genesis.h>
+#include "elements.h"
+
+typedef enum {
+	COLLISIONS, //
+	LISTS, //
+} Utility;
+
+void initConfig();
+Config setUpTest();
 
 #endif /* INC_CONFIG_H_ */

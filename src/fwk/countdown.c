@@ -1,11 +1,11 @@
 /*
- * timers.c
+ * countdown.c
  *
- *  Created on: Oct 12, 2019
+ *  Created on: Dec 24, 2019
  *      Author: diegomtassis
  */
 
-#include "../../inc/fwk/timers.h"
+#include "../../inc/fwk/countdown.h"
 
 #include <timer.h>
 #include <types.h>

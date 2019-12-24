@@ -7,6 +7,9 @@
 
 #include <genesis.h>
 
+#include "../inc/config.h"
+#include "../inc/elements.h"
+#include "../inc/fwk/vdp_utils.h"
 #include "../inc/yamdl_file.h"
 
 //#include "../inc/fwk/logger.h"
@@ -26,7 +29,14 @@ int main(u16 hard) {
 		waitMs(50);
 	}
 
+	resetTileMemory();
+
+	initConfig();
+
 	while (1) {
+
+		// log_memory();
+		Config config = setUpTest();
 
 		VDP_waitVSync();
 	}

@@ -7,7 +7,7 @@ Sega Mega Drive / Genesis library written by diegomtassis as an extension to SGD
 
 It's currently work in progress.
 
-The utilities here are those which I needed to develop for other games and are generic enough to be extracted to a multipurpose library.
+The utilities here are those which I needed at some point in time for developing games and are generic enough to be extracted to a multipurpose library.
 
 Copy whatever you need for you game and remove everythinbg else.
 
@@ -15,10 +15,13 @@ https://github.com/diegomtassis/yamd-library
 
 
 #### Current utilities
-* 
-*
-*
-*
+
+The utilities code is located under the fwk folder.
+
+* 2D simple physics
+* Lists
+* A printer
+* Countdown
 
 #### To be implemented
 * 
