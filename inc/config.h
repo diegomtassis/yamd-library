@@ -13,6 +13,7 @@
 typedef enum {
 	COLLISIONS = 1, //
 	LISTS, //
+	SPATIAL_GRID, //
 } Utility;
 
 void initConfig();

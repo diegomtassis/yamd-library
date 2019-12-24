@@ -9,15 +9,16 @@
 
 #include <genesis.h>
 
-#include "../inc/elements.h"
+#include "../inc/fwk/assert.h"
 #include "../inc/fwk/commons.h"
 
 static const char* TEXT_YAMDL = "Yet Another MegaDrive Library";
-static const char* TEXT_SELECTION = "Select a utility to test";
+static const char* TEXT_SELECTION = "Test Suite";
 static const char* TEXT_UTILITY = "Utility";
 static const char* TEXT_PHYSICS = "2D Physics";
 static const char* TEXT_LISTS = "Lists";
-static const char* PRESS_START_BUTTON = "start test";
+static const char* TEXT_SPATIAL_GRID = "Spatial grid";
+static const char* PRESS_RUN_TESTS = "Run test scenarios";
 
 static const u16 BUTTON_ABC = BUTTON_A | BUTTON_B | BUTTON_C;
 
@@ -29,7 +30,7 @@ static void clearConfigScreen();
 static void displayConfig(Config config, V2u16 pos);
 static void displayOption(const char *option, const char *value, u8 highlighted, u16 x, u16 y);
 
-static const char* printableMode(Config config);
+static const char* printableTest(Config config);
 
 static void changeMode(Config config[static 1]);
 
@@ -115,28 +116,33 @@ static void displayConfig(Config config, V2u16 pos) {
 		VDP_drawText(TEXT_SELECTION, pos.x, pos.y);
 
 		pos.y += 4;
-		displayOption(TEXT_UTILITY, printableMode(config), current_option == OPTION_TEST, pos.x, pos.y);
+		displayOption(TEXT_UTILITY, printableTest(config), current_option == OPTION_TEST, pos.x, pos.y);
 
 		pos.y += 4;
-		displayOption(PRESS_START_BUTTON, 0, current_option == OPTION_START, pos.x, pos.y);
+		displayOption(PRESS_RUN_TESTS, 0, current_option == OPTION_START, pos.x, pos.y);
 
 		refresh = FALSE;
 	}
 }
 
-static const char* printableMode(Config config) {
+static const char* printableTest(Config config) {
 
 	switch (config.test) {
 	case COLLISIONS:
 		return TEXT_PHYSICS;
-	default:
+	case LISTS:
 		return TEXT_LISTS;
+	case SPATIAL_GRID:
+		return TEXT_SPATIAL_GRID;
+	default:
+		assert(FALSE, "Invalid test");
+		return 0;
 	}
 }
 
 static void changeMode(Config config[static 1]) {
 
-	if (config->test == LISTS) {
+	if (config->test == SPATIAL_GRID) {
 		config->test = COLLISIONS;
 	} else {
 		config->test++;

@@ -1,5 +1,5 @@
 /*
- * test_lists.c
+ * test_spatial_grid.c
  *
  *  Created on: Dec 24, 2019
  *      Author: diegomtassis
@@ -9,7 +9,7 @@
 
 #include <genesis.h>
 
-void testLists() {
+void testSpatialGrid() {
 
-	KLog("testing lists");
+	KLog("testing spatial grid");
 }

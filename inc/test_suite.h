@@ -12,4 +12,8 @@
 
 void runTest(const Config* config);
 
+void testCollisions();
+void testLists();
+void testSpatialGrid();
+
 #endif /* INC_TEST_SUITE_H_ */

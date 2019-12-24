@@ -12,9 +12,6 @@
 #include "../inc/config.h"
 #include "../inc/fwk/assert.h"
 
-extern void testCollisions();
-extern void testLists();
-
 void runTest(const Config* config) {
 
 	assert(config->test, "No test set");
@@ -28,9 +25,12 @@ void runTest(const Config* config) {
 		testLists();
 		break;
 
+	case SPATIAL_GRID:
+		testSpatialGrid();
+		break;
+
 	default:
 		assert(FALSE, "Invalid test ");
 		break;
 	}
-
 }
