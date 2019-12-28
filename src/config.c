@@ -13,14 +13,10 @@
 #include "../inc/fwk/commons.h"
 
 static const char* TEXT_YAMDL = "Yet Another MegaDrive Library";
-static const char* TEXT_SELECTION = "Test Suite";
-static const char* TEXT_UTILITY = "Utility";
-static const char* TEXT_PHYSICS = "2D Physics";
+static const char* TEXT_TEST_SUITE = "Test Suite";
 static const char* TEXT_LISTS = "Lists";
+static const char* TEXT_PHYSICS = "2D Physics";
 static const char* TEXT_SPATIAL_GRID = "Spatial grid";
-static const char* PRESS_RUN_TESTS = "Run test scenarios";
-
-static const u16 BUTTON_ABC = BUTTON_A | BUTTON_B | BUTTON_C;
 
 static void setUpDefaults();
 
@@ -30,15 +26,14 @@ static void clearConfigScreen();
 static void displayConfig(Config config, V2u16 pos);
 static void displayOption(const char *option, const char *value, u8 highlighted, u16 x, u16 y);
 
-static const char* printableTest(Config config);
-
-static void changeMode(Config config[static 1]);
+static void changeTest(Config config[static 1]);
 
 static void joyEvent(u16 joy, u16 changed, u16 state);
 
 volatile enum option {
-	OPTION_TEST, //
-	OPTION_START,
+	OPTION_LISTS, //
+	OPTION_PHYSICS, //
+	OPTION_SPATIAL_GRID, //
 } current_option;
 
 static Config* current_config;
@@ -62,10 +57,8 @@ const Config* setUpTest() {
 
 	if (!current_config) {
 		current_config = MEM_calloc(sizeof(*current_config));
-		current_config->test = COLLISIONS;
+		current_config->test = LISTS;
 	}
-
-	current_option = OPTION_TEST;
 
 	initConfigScreen();
 
@@ -113,39 +106,16 @@ static void displayConfig(Config config, V2u16 pos) {
 		VDP_drawText(TEXT_YAMDL, pos.x, pos.y);
 
 		pos.y += 4;
-		VDP_drawText(TEXT_SELECTION, pos.x, pos.y);
+		VDP_drawText(TEXT_TEST_SUITE, pos.x, pos.y);
 
 		pos.y += 4;
-		displayOption(TEXT_UTILITY, printableTest(config), current_option == OPTION_TEST, pos.x, pos.y);
-
-		pos.y += 4;
-		displayOption(PRESS_RUN_TESTS, 0, current_option == OPTION_START, pos.x, pos.y);
+		displayOption(TEXT_LISTS, 0, current_option == OPTION_LISTS, pos.x, pos.y);
+		pos.y += 2;
+		displayOption(TEXT_PHYSICS, 0, current_option == OPTION_PHYSICS, pos.x, pos.y);
+		pos.y += 2;
+		displayOption(TEXT_SPATIAL_GRID, 0, current_option == OPTION_SPATIAL_GRID, pos.x, pos.y);
 
 		refresh = FALSE;
-	}
-}
-
-static const char* printableTest(Config config) {
-
-	switch (config.test) {
-	case COLLISIONS:
-		return TEXT_PHYSICS;
-	case LISTS:
-		return TEXT_LISTS;
-	case SPATIAL_GRID:
-		return TEXT_SPATIAL_GRID;
-	default:
-		assert(FALSE, "Invalid test");
-		return 0;
-	}
-}
-
-static void changeMode(Config config[static 1]) {
-
-	if (config->test == SPATIAL_GRID) {
-		config->test = COLLISIONS;
-	} else {
-		config->test++;
 	}
 }
 
@@ -160,39 +130,51 @@ static void displayOption(const char *option, const char *value, u8 highlighted,
 	VDP_setTextPriority(0);
 }
 
+static void changeTest(Config config[static 1]) {
+
+	switch (current_option) {
+	case OPTION_LISTS:
+		config->test = LISTS;
+		break;
+
+	case OPTION_PHYSICS:
+		config->test = PHYSICS;
+		break;
+
+	case OPTION_SPATIAL_GRID:
+		config->test = SPATIAL_GRID;
+		break;
+
+	default:
+		assert(FALSE, "Invalid test ");
+		break;
+	}
+}
+
 static void joyEvent(u16 joy, u16 changed, u16 state) {
 
 	if (BUTTON_DOWN & changed & ~state) {
 
-		if (current_option == OPTION_START) {
-			current_option = OPTION_TEST;
+		if (current_option == OPTION_SPATIAL_GRID) {
+			current_option = OPTION_LISTS;
 		} else {
 			current_option++;
 		}
+		changeTest(current_config);
 		refresh = TRUE;
 	}
 
 	if (BUTTON_UP & changed & ~state) {
-		if (current_option == OPTION_TEST) {
-			current_option = OPTION_START;
+		if (current_option == OPTION_LISTS) {
+			current_option = OPTION_SPATIAL_GRID;
 		} else {
 			current_option--;
 		}
+		changeTest(current_config);
 		refresh = TRUE;
 	}
 
-	if (BUTTON_ABC & changed & ~state) {
-
-		if (current_option == OPTION_TEST) {
-			changeMode(current_config);
-			refresh = TRUE;
-
-		}
-	}
-
 	if (BUTTON_START & changed & ~state) {
-		if (current_option == OPTION_START) {
-			start = TRUE;
-		}
+		start = TRUE;
 	}
 }

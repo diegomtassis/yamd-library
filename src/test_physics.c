@@ -9,7 +9,7 @@
 
 #include <genesis.h>
 
-void testCollisions() {
+void testPhysics() {
 
-	KLog("testing collisions");
+	KLog("testing physics");
 }

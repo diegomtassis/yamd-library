@@ -11,8 +11,8 @@
 #include "elements.h"
 
 typedef enum {
-	COLLISIONS = 1, //
-	LISTS, //
+	LISTS = 1, //
+	PHYSICS, //
 	SPATIAL_GRID, //
 } Utility;
 

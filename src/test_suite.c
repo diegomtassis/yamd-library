@@ -17,12 +17,12 @@ void runTest(const Config* config) {
 	assert(config->test, "No test set");
 
 	switch (config->test) {
-	case COLLISIONS:
-		testCollisions();
-		break;
-
 	case LISTS:
 		testLists();
+		break;
+
+	case PHYSICS:
+		testPhysics();
 		break;
 
 	case SPATIAL_GRID:
