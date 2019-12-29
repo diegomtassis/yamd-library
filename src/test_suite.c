@@ -1,5 +1,5 @@
 /*
- * testsuite.c
+ * test_suite.c
  *
  *  Created on: Dec 24, 2019
  *      Author: diegomtassis
@@ -27,6 +27,10 @@ void runTest(const Config* config) {
 
 	case SPATIAL_GRID:
 		testSpatialGrid();
+		break;
+
+	case PRINTER:
+		testPrinter();
 		break;
 
 	default:

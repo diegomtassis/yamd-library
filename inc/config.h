@@ -14,6 +14,7 @@ typedef enum {
 	LISTS = 1, //
 	PHYSICS, //
 	SPATIAL_GRID, //
+	PRINTER, //
 } Utility;
 
 void initConfig();

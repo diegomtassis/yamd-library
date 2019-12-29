@@ -15,5 +15,6 @@ void runTest(const Config* config);
 void testLists();
 void testPhysics();
 void testSpatialGrid();
+void testPrinter();
 
 #endif /* INC_TEST_SUITE_H_ */

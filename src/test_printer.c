@@ -1,7 +1,7 @@
 /*
- * test_physics.c
+ * test_printer.c
  *
- *  Created on: Dec 24, 2019
+ *  Created on: Dec 29, 2019
  *      Author: diegomtassis
  */
 
@@ -9,7 +9,7 @@
 
 #include <genesis.h>
 
-void testPhysics() {
+void testPrinter() {
 
-	KLog("testing physics");
+	KLog("testing printer");
 }

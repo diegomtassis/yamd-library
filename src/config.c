@@ -17,6 +17,7 @@ static const char* TEXT_TEST_SUITE = "Test Suite";
 static const char* TEXT_LISTS = "Lists";
 static const char* TEXT_PHYSICS = "2D Physics";
 static const char* TEXT_SPATIAL_GRID = "Spatial grid";
+static const char* TEXT_PRINTER = "Printer";
 
 static void setUpDefaults();
 
@@ -34,6 +35,7 @@ volatile enum option {
 	OPTION_LISTS, //
 	OPTION_PHYSICS, //
 	OPTION_SPATIAL_GRID, //
+	OPTION_PRINTER, //
 } current_option;
 
 static Config* current_config;
@@ -114,6 +116,8 @@ static void displayConfig(Config config, V2u16 pos) {
 		displayOption(TEXT_PHYSICS, 0, current_option == OPTION_PHYSICS, pos.x, pos.y);
 		pos.y += 2;
 		displayOption(TEXT_SPATIAL_GRID, 0, current_option == OPTION_SPATIAL_GRID, pos.x, pos.y);
+		pos.y += 2;
+		displayOption(TEXT_PRINTER, 0, current_option == OPTION_PRINTER, pos.x, pos.y);
 
 		refresh = FALSE;
 	}
@@ -145,6 +149,10 @@ static void changeTest(Config config[static 1]) {
 		config->test = SPATIAL_GRID;
 		break;
 
+	case OPTION_PRINTER:
+		config->test = PRINTER;
+		break;
+
 	default:
 		assert(FALSE, "Invalid test ");
 		break;
@@ -155,7 +163,7 @@ static void joyEvent(u16 joy, u16 changed, u16 state) {
 
 	if (BUTTON_DOWN & changed & ~state) {
 
-		if (current_option == OPTION_SPATIAL_GRID) {
+		if (current_option == OPTION_PRINTER) {
 			current_option = OPTION_LISTS;
 		} else {
 			current_option++;
@@ -166,7 +174,7 @@ static void joyEvent(u16 joy, u16 changed, u16 state) {
 
 	if (BUTTON_UP & changed & ~state) {
 		if (current_option == OPTION_LISTS) {
-			current_option = OPTION_SPATIAL_GRID;
+			current_option = OPTION_PRINTER;
 		} else {
 			current_option--;
 		}
