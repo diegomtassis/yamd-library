@@ -11,12 +11,32 @@
 
 #include <genesis.h>
 
+static void printFlynnTheGridSpeech();
+static void printLoremIpsum();
+
 void testPrinter() {
 
 	KLog("testing printer");
 
 	VDP_setTextPalette(PAL2);
 	VDP_clearPlan(VDP_getTextPlan(), TRUE);
+
+	printerOn();
+
+	clearScreen();
+	waitMs(WAIT_1100);
+
+	printFlynnTheGridSpeech();
+
+	clearScreen();
+	waitMs(WAIT_1100);
+
+	printLoremIpsum();
+
+	printerOff();
+}
+
+static void printFlynnTheGridSpeech() {
 
 	clearScreen();
 	printerOn();
@@ -62,6 +82,18 @@ void testPrinter() {
 	print(" got");
 	waitMs(500);
 	print(" in");
+
+	waitMs(3000);
+}
+
+static void printLoremIpsum() {
+
+	clearScreen();
+	printerOn();
+	waitMs(WAIT_1100);
+
+	print(
+			"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
 
 	waitMs(3000);
 
