@@ -10,9 +10,9 @@
 
 #include <genesis.h>
 
-#define WAIT_1100	 	1100
-#define WAIT_750		750
 #define WAIT_50			50
+#define WAIT_750		750
+#define WAIT_1100	 	1100
 
 void printerOn();
 void printerOff();

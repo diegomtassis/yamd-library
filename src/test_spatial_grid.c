@@ -9,7 +9,20 @@
 
 #include <genesis.h>
 
+#include "../inc/fwk/printer.h"
+
 void testSpatialGrid() {
 
 	KLog("testing spatial grid");
+
+	VDP_setTextPalette(PAL2);
+	VDP_clearPlan(VDP_getTextPlan(), TRUE);
+
+	clearScreen();
+	printerOn();
+
+	print("Spatial Grid test scenario not implemented yet.");
+
+	waitMs(3000);
+	printerOff();
 }

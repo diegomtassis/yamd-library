@@ -48,9 +48,10 @@ void printerOn() {
 
 void printerOff() {
 
+	clearScreen();
 	SPR_reset();
 	SPR_update();
-	VDP_clearPlan(VDP_getTextPlan(), TRUE);
+	MEM_free(pos);
 }
 
 void clearScreen() {

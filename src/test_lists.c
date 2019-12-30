@@ -5,11 +5,22 @@
  *      Author: diegomtassis
  */
 
-#include "../inc/test_suite.h"
-
 #include <genesis.h>
+
+#include "../inc/fwk/printer.h"
 
 void testLists() {
 
 	KLog("testing lists");
+
+	VDP_setTextPalette(PAL2);
+	VDP_clearPlan(VDP_getTextPlan(), TRUE);
+
+	clearScreen();
+	printerOn();
+
+	print("Lists test scenario not implemented yet.");
+
+	waitMs(3000);
+	printerOff();
 }
