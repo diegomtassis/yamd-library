@@ -6,14 +6,11 @@
  */
 
 #include "../../inc/fwk/printer.h"
-#include "../../res/sprite.h"
 
 #include <genesis.h>
 
-#define WAIT_MS	50
-
-static const V2u16 MIN_PRT_AREA = { .x = 0, .y = 3 };
-static const V2u16 MAX_PRT_AREA = { .x = 31, .y = 27 };
+#include "../../inc/fwk/commons.h"
+#include "../../res/sprite.h"
 
 static void printChar(const char* text, u16 pos, int is_last, V2u16* offset);
 
@@ -22,17 +19,29 @@ static void moveToNextLine(V2u16* offset);
 static void normalizeOffset(V2u16* offset);
 
 static void cursorOn();
-static void cursorOnAt(V2u16* offset);
 static void cursorOff();
+static void cursorUpdate();
 
 static u16 tilesToPx(u8);
 
 static Sprite* cursor;
 
+static V2u16 min_screen = { .x = 1, .y = 1 };
+static V2u16 max_screen = { .x = 38, .y = 28 };
+
+static V2u16* pos;
+
 void printerOn() {
 
+	max_screen.x = VDP_getScreenWidth() == 320 ? 38 : 30;
+	max_screen.y = VDP_getScreenHeight() == 240 ? 28 : 26;
+
+	pos = MEM_calloc(sizeof(*pos));
+	setV2u16(pos, min_screen.x, min_screen.y);
+
 	SPR_init(5, 16, 64);
-	cursor = SPR_addSprite(&cursor_sprite, tilesToPx(MIN_PRT_AREA.x), tilesToPx(MIN_PRT_AREA.y),
+
+	cursor = SPR_addSprite(&cursor_sprite, tilesToPx(pos->x), tilesToPx(pos->y),
 			TILE_ATTR(VDP_getTextPalette(), TRUE, FALSE, FALSE));
 	cursorOn();
 }
@@ -44,20 +53,27 @@ void printerOff() {
 	VDP_clearPlan(VDP_getTextPlan(), TRUE);
 }
 
-void println(const char* text, V2u16* offset) {
+void clearScreen() {
 
-	print(text, offset);
-	if (offset->x != MIN_PRT_AREA.x) {
-		moveToNextLine(offset);
-	}
-	moveToNextLine(offset);
-
-	cursorOnAt(offset);
+	VDP_clearPlan(VDP_getTextPlan(), TRUE);
+	setV2u16(pos, min_screen.x, min_screen.y);
+	cursorOn();
 }
 
-void print(const char* text, V2u16* offset) {
+void println(const char* text) {
 
-	normalizeOffset(offset);
+	print(text);
+	if (pos->x != min_screen.x) {
+		moveToNextLine(pos);
+	}
+	moveToNextLine(pos);
+
+	cursorUpdate();
+}
+
+void print(const char* text) {
+
+	normalizeOffset(pos);
 
 	u16 rest = strlen(text);
 	u16 current = 0;
@@ -66,11 +82,11 @@ void print(const char* text, V2u16* offset) {
 
 	while (rest--) {
 
-		printChar(text, current++, rest == 1, offset);
-		waitMs(WAIT_MS);
+		printChar(text, current++, rest == 1, pos);
+		waitMs(WAIT_50);
 	}
 
-	cursorOnAt(offset);
+	cursorUpdate();
 }
 
 static void printChar(const char* text, u16 pos, int is_last, V2u16* offset) {
@@ -90,7 +106,7 @@ static void printChar(const char* text, u16 pos, int is_last, V2u16* offset) {
 	}
 
 	if (current != ' ') {
-		if (offset->x == MAX_PRT_AREA.x && next != ' ') {
+		if (offset->x == max_screen.x && next != ' ') {
 			if (prev != ' ') {
 				VDP_drawText("-", offset->x, offset->y);
 				moveForward(offset);
@@ -113,18 +129,18 @@ static void printChar(const char* text, u16 pos, int is_last, V2u16* offset) {
 
 static void normalizeOffset(V2u16* offset) {
 
-	if (offset->x < MIN_PRT_AREA.x) {
-		offset->x = MIN_PRT_AREA.x;
+	if (offset->x < min_screen.x) {
+		offset->x = min_screen.x;
 	}
 
-	if (offset->y < MIN_PRT_AREA.y) {
-		offset->y = MIN_PRT_AREA.y;
+	if (offset->y < min_screen.y) {
+		offset->y = min_screen.y;
 	}
 }
 
 static void moveForward(V2u16* offset) {
 
-	if (offset->x == MAX_PRT_AREA.x) {
+	if (offset->x == max_screen.x) {
 		moveToNextLine(offset);
 		moveToNextLine(offset);
 	} else {
@@ -136,7 +152,7 @@ static void moveForward(V2u16* offset) {
 
 static void moveToNextLine(V2u16* offset) {
 
-	offset->x = MIN_PRT_AREA.x;
+	offset->x = min_screen.x;
 	offset->y++;
 
 	SPR_setPosition(cursor, offset->x, offset->y);
@@ -144,19 +160,19 @@ static void moveToNextLine(V2u16* offset) {
 
 static void cursorOn() {
 
-	SPR_setVisibility(cursor, VISIBLE);
-	SPR_update();
-}
-
-static void cursorOnAt(V2u16* offset) {
-
-	SPR_setPosition(cursor, tilesToPx(offset->x), tilesToPx(offset->y));
-	cursorOn();
+	cursorUpdate();
 }
 
 static void cursorOff() {
 
 	SPR_setVisibility(cursor, HIDDEN);
+	SPR_update();
+}
+
+static void cursorUpdate() {
+
+	SPR_setVisibility(cursor, VISIBLE);
+	SPR_setPosition(cursor, tilesToPx(pos->x), tilesToPx(pos->y));
 	SPR_update();
 }
 

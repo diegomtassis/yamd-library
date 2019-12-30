@@ -9,39 +9,37 @@
 
 #include "../inc/fwk/printer.h"
 
-#define WAIT_MS_BEFORE 	1100
-#define WAIT_MS_BETWEEN	750
-
 void printDisclaimer() {
+
+	VDP_setScreenWidth320();
+	VDP_setScreenHeight224();
 
 	VDP_setTextPalette(PAL2);
 
-	V2u16 pos = { .x = 0, .y = 3 };
-
 	printerOn();
-	waitMs(WAIT_MS_BEFORE);
+	waitMs(WAIT_1100);
 
-	print("Program: YAMD-library test", &pos);
-	waitMs(WAIT_MS_BETWEEN);
+	print("Program: YAMD-library test");
+	waitMs(WAIT_750);
 
-	println("", &pos);
-	println("", &pos);
-	print("Written by Diego Martin, 2019", &pos);
-	waitMs(WAIT_MS_BETWEEN);
+	println("");
+	println("");
+	print("Written by Diego Martin, 2019");
+	waitMs(WAIT_750);
 
-	println("", &pos);
-	println("", &pos);
-	print("Work in progress", &pos);
-	waitMs(WAIT_MS_BETWEEN);
+	println("");
+	println("");
+	print("Work in progress");
+	waitMs(WAIT_750);
 
-	println("", &pos);
-	println("", &pos);
-	print("This information priority one", &pos);
-	waitMs(WAIT_MS_BETWEEN);
+	println("");
+	println("");
+	print("This information priority one");
+	waitMs(WAIT_750);
 
-	println("", &pos);
-	println("", &pos);
-	print("End of Line", &pos);
+	println("");
+	println("");
+	print("End of Line");
 }
 
 void clearDisclaimer() {

@@ -10,10 +10,15 @@
 
 #include <genesis.h>
 
+#define WAIT_1100	 	1100
+#define WAIT_750		750
+#define WAIT_50			50
+
 void printerOn();
 void printerOff();
+void clearScreen();
 
-void print(const char *text, V2u16 * offset);
-void println(const char *text, V2u16 * offset);
+void print(const char *text);
+void println(const char *text);
 
 #endif /* INC_PRINTER_H_ */
