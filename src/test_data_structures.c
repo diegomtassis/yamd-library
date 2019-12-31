@@ -9,14 +9,12 @@
 
 #include "../inc/fwk/printer.h"
 
-void testLists() {
+void testDataStructures() {
 
 	KLog("testing data structures");
 
 	VDP_setTextPalette(PAL2);
-	VDP_clearPlan(VDP_getTextPlan(), TRUE);
 
-	clearScreen();
 	turnPrinterOn();
 
 	print("Data structures test scenario not implemented yet.");

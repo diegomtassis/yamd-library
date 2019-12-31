@@ -16,9 +16,7 @@ void testSpatialGrid() {
 	KLog("testing spatial grid");
 
 	VDP_setTextPalette(PAL2);
-	VDP_clearPlan(VDP_getTextPlan(), TRUE);
 
-	clearScreen();
 	turnPrinterOn();
 
 	print("Spatial Grid test scenario not implemented yet.");

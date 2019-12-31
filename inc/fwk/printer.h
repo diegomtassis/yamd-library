@@ -14,6 +14,7 @@
 #define WAIT_750		750
 #define WAIT_1100	 	1100
 
+void initPrinter();
 void turnPrinterOn();
 void turnPrinterOff();
 void clearScreen();

@@ -16,9 +16,7 @@ void testPhysics() {
 	KLog("testing physics");
 
 	VDP_setTextPalette(PAL2);
-	VDP_clearPlan(VDP_getTextPlan(), TRUE);
 
-	clearScreen();
 	turnPrinterOn();
 
 	print("Physics test scenario not implemented yet.");

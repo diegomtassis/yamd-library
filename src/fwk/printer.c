@@ -31,7 +31,11 @@ static V2u16 max_screen = { .x = 38, .y = 28 };
 static V2u16* pos;
 static Sprite* cursor;
 
-static bool printer_on = FALSE;
+static bool printer_on;
+
+void initPrinter() {
+	printer_on = FALSE;
+}
 
 void turnPrinterOn() {
 
@@ -52,9 +56,10 @@ void turnPrinterOn() {
 
 	cursor = SPR_addSprite(&cursor_sprite, tilesToPx(pos->x), tilesToPx(pos->y),
 			TILE_ATTR(VDP_getTextPalette(), TRUE, FALSE, FALSE));
-	cursorOn();
 
 	printer_on = TRUE;
+
+	clearScreen();
 }
 
 void turnPrinterOff() {
@@ -64,14 +69,23 @@ void turnPrinterOff() {
 	}
 
 	clearScreen();
+
 	SPR_reset();
 	SPR_update();
-	MEM_free(pos);
+
+	if (pos) {
+		MEM_free(pos);
+		pos = 0;
+	}
 
 	printer_on = FALSE;
 }
 
 void clearScreen() {
+
+	if (!printer_on) {
+		return;
+	}
 
 	VDP_clearPlan(VDP_getTextPlan(), TRUE);
 	VDP_setVerticalScroll(VDP_getTextPlan(), 0);

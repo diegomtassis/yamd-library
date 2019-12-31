@@ -9,6 +9,7 @@
 
 #include "../inc/config.h"
 #include "../inc/elements.h"
+#include "../inc/fwk/printer.h"
 #include "../inc/fwk/vdp_utils.h"
 #include "../inc/test_suite.h"
 #include "../inc/yamdl_file.h"
@@ -21,6 +22,8 @@ int main(u16 hard) {
 
 	VDP_setScreenWidth320();
 	VDP_setScreenHeight224();
+
+	initPrinter();
 
 	if (hard) {
 		printDisclaimer();

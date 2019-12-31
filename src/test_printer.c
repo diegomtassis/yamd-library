@@ -24,7 +24,6 @@ void testPrinter() {
 	KLog("testing printer");
 
 	VDP_setTextPalette(PAL2);
-	VDP_clearPlan(VDP_getTextPlan(), TRUE);
 
 	turnPrinterOn();
 	waitMs(WAIT_1100);

@@ -18,7 +18,7 @@ void runTest(const Config* config) {
 
 	switch (config->test) {
 	case DATA_STRUCTURES:
-		testLists();
+		testDataStructures();
 		break;
 
 	case PHYSICS:

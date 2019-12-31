@@ -12,7 +12,7 @@
 
 void runTest(const Config* config);
 
-void testLists();
+void testDataStructures();
 void testPhysics();
 void testSpatialGrid();
 void testPrinter();
