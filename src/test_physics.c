@@ -19,10 +19,10 @@ void testPhysics() {
 	VDP_clearPlan(VDP_getTextPlan(), TRUE);
 
 	clearScreen();
-	printerOn();
+	turnPrinterOn();
 
 	print("Physics test scenario not implemented yet.");
 
 	waitMs(3000);
-	printerOff();
+	turnPrinterOff();
 }

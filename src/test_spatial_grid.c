@@ -19,10 +19,10 @@ void testSpatialGrid() {
 	VDP_clearPlan(VDP_getTextPlan(), TRUE);
 
 	clearScreen();
-	printerOn();
+	turnPrinterOn();
 
 	print("Spatial Grid test scenario not implemented yet.");
 
 	waitMs(3000);
-	printerOff();
+	turnPrinterOff();
 }

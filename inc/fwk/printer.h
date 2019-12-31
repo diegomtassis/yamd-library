@@ -14,8 +14,8 @@
 #define WAIT_750		750
 #define WAIT_1100	 	1100
 
-void printerOn();
-void printerOff();
+void turnPrinterOn();
+void turnPrinterOff();
 void clearScreen();
 
 void print(const char *text);

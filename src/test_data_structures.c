@@ -17,10 +17,10 @@ void testLists() {
 	VDP_clearPlan(VDP_getTextPlan(), TRUE);
 
 	clearScreen();
-	printerOn();
+	turnPrinterOn();
 
 	print("Data structures test scenario not implemented yet.");
 
 	waitMs(3000);
-	printerOff();
+	turnPrinterOff();
 }

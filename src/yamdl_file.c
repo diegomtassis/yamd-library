@@ -16,7 +16,7 @@ void printDisclaimer() {
 
 	VDP_setTextPalette(PAL2);
 
-	printerOn();
+	turnPrinterOn();
 	waitMs(WAIT_1100);
 
 	print("Program: YaMDl test suite");
@@ -44,5 +44,5 @@ void printDisclaimer() {
 
 void clearDisclaimer() {
 
-	printerOff();
+	turnPrinterOff();
 }

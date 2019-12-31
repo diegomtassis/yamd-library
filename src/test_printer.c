@@ -16,8 +16,7 @@ static const int MIDDLE_DOT_WAIT = 900;
 static const int PARAGRAPH_DOT_WAIT = 1250;
 static const int FULL_STOP_WAIT = 3000;
 
-static void printFlynnTheGridSpeech();
-static void printLoremIpsum();
+static void printFlynnSpeech();
 static void printArchitectSpeech();
 
 void testPrinter() {
@@ -27,30 +26,20 @@ void testPrinter() {
 	VDP_setTextPalette(PAL2);
 	VDP_clearPlan(VDP_getTextPlan(), TRUE);
 
-	printerOn();
-
-	clearScreen();
-	waitMs(WAIT_1100);
-
-	printFlynnTheGridSpeech();
-
-	clearScreen();
+	turnPrinterOn();
 	waitMs(WAIT_1100);
 
 	printArchitectSpeech();
-
-	clearScreen();
 	waitMs(WAIT_1100);
 
-	printLoremIpsum();
+	printFlynnSpeech();
 
-	printerOff();
+	turnPrinterOff();
 }
 
-static void printFlynnTheGridSpeech() {
+static void printFlynnSpeech() {
 
 	clearScreen();
-	printerOn();
 	waitMs(WAIT_1100);
 
 	print("The Grid.");
@@ -98,8 +87,45 @@ static void printFlynnTheGridSpeech() {
 static void printArchitectSpeech() {
 
 	clearScreen();
-	printerOn();
 	waitMs(WAIT_1100);
+
+	print("I am the Architect.");
+	waitMs(PARAGRAPH_DOT_WAIT);
+	println("");
+	println("");
+	print("I created the matrix.");
+	waitMs(PARAGRAPH_DOT_WAIT);
+	println("");
+	println("");
+	print("I've been waiting for you.");
+	waitMs(PARAGRAPH_DOT_WAIT);
+	println("");
+	println("");
+	print("You have many questions,");
+	waitMs(COMMA_WAIT);
+	print(" and although the process has altered your consciousness,");
+	waitMs(COMMA_WAIT);
+	print(" you remain irrevocably human.");
+	waitMs(PARAGRAPH_DOT_WAIT);
+	println("");
+	println("");
+	print("Ergo,");
+	waitMs(COMMA_WAIT);
+	print(" some of my answers you will understand,");
+	waitMs(COMMA_WAIT);
+	print(" and some of them you will not.");
+	waitMs(PARAGRAPH_DOT_WAIT);
+	println("");
+	println("");
+	print("Concordantly,");
+	waitMs(COMMA_WAIT);
+	print(" while your first question may be the most pertinent,");
+	waitMs(COMMA_WAIT);
+	print(" you may or may not realize it is also irrelevant.");
+
+	waitMs(FULL_STOP_WAIT);
+	println("");
+	println("");
 
 	print("Your life is the sum of a remainder of an unbalanced equation inherent to the programming of the matrix.");
 	waitMs(MIDDLE_DOT_WAIT);
@@ -121,32 +147,4 @@ static void printArchitectSpeech() {
 	print(" here.");
 
 	waitMs(FULL_STOP_WAIT);
-
-	printerOff();
-}
-
-static void printLoremIpsum() {
-
-	clearScreen();
-	printerOn();
-	waitMs(WAIT_1100);
-
-	print("Lorem ipsum dolor sit amet,");
-	waitMs(COMMA_WAIT);
-	print(" consectetur adipiscing elit,");
-	waitMs(COMMA_WAIT);
-	print(" sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.");
-	waitMs(MIDDLE_DOT_WAIT);
-	print(" Ut enim ad minim veniam,");
-	waitMs(COMMA_WAIT);
-	print(" quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.");
-	waitMs(MIDDLE_DOT_WAIT);
-	print(" Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.");
-	waitMs(MIDDLE_DOT_WAIT);
-	print("Excepteur sint occaecat cupidatat non proident,");
-	waitMs(COMMA_WAIT);
-	print(" sunt in culpa qui officia deserunt mollit anim id est laborum.");
-	waitMs(FULL_STOP_WAIT);
-
-	printerOff();
 }

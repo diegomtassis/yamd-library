@@ -22,19 +22,28 @@ static void cursorOn();
 static void cursorOff();
 static void cursorUpdate();
 
-static u16 tilesToPx(u8);
-
-static Sprite* cursor;
+static u16 tilesToPx(u16);
+static u16 pxToTiles(u16);
 
 static V2u16 min_screen = { .x = 1, .y = 1 };
 static V2u16 max_screen = { .x = 38, .y = 28 };
 
 static V2u16* pos;
+static Sprite* cursor;
 
-void printerOn() {
+static bool printer_on = FALSE;
+
+void turnPrinterOn() {
+
+	if (printer_on) {
+		return;
+	}
 
 	max_screen.x = VDP_getScreenWidth() == 320 ? 38 : 30;
 	max_screen.y = VDP_getScreenHeight() == 240 ? 28 : 26;
+
+	VDP_setScrollingMode( HSCROLL_PLANE, VSCROLL_PLANE);
+	VDP_setVerticalScroll(VDP_getTextPlan(), 0);
 
 	pos = MEM_calloc(sizeof(*pos));
 	setV2u16(pos, min_screen.x, min_screen.y);
@@ -44,19 +53,28 @@ void printerOn() {
 	cursor = SPR_addSprite(&cursor_sprite, tilesToPx(pos->x), tilesToPx(pos->y),
 			TILE_ATTR(VDP_getTextPalette(), TRUE, FALSE, FALSE));
 	cursorOn();
+
+	printer_on = TRUE;
 }
 
-void printerOff() {
+void turnPrinterOff() {
+
+	if (!printer_on) {
+		return;
+	}
 
 	clearScreen();
 	SPR_reset();
 	SPR_update();
 	MEM_free(pos);
+
+	printer_on = FALSE;
 }
 
 void clearScreen() {
 
 	VDP_clearPlan(VDP_getTextPlan(), TRUE);
+	VDP_setVerticalScroll(VDP_getTextPlan(), 0);
 	setV2u16(pos, min_screen.x, min_screen.y);
 	cursorOn();
 }
@@ -122,7 +140,7 @@ static void printChar(const char* text, u16 pos, int is_last, V2u16* offset) {
 
 	} else {
 		// ignore spaces in the first pos
-		if (offset->x) {
+		if (offset->x != min_screen.x) {
 			moveForward(offset);
 		}
 	}
@@ -156,6 +174,12 @@ static void moveToNextLine(V2u16* offset) {
 	offset->x = min_screen.x;
 	offset->y++;
 
+	if (offset->y > max_screen.y) {
+		int v_offset = offset->y - max_screen.y;
+		VDP_setVerticalScroll(VDP_getTextPlan(), tilesToPx(v_offset));
+		VDP_clearTextLine(pxToTiles(VDP_getScreenHeight()) + v_offset); // First line not seen
+	}
+
 	SPR_setPosition(cursor, offset->x, offset->y);
 }
 
@@ -177,6 +201,10 @@ static void cursorUpdate() {
 	SPR_update();
 }
 
-static u16 tilesToPx(u8 tiles) {
+static u16 tilesToPx(u16 tiles) {
 	return tiles * 8;
+}
+
+static u16 pxToTiles(u16 px) {
+	return px / 8;
 }
