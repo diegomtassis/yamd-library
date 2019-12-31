@@ -14,6 +14,11 @@
 #define WAIT_750		750
 #define WAIT_1100	 	1100
 
+#define COMMA_WAIT 			500
+#define MIDDLE_DOT_WAIT 	900
+#define PARAGRAPH_DOT_WAIT 	1250
+#define FULL_STOP_WAIT 		3000
+
 void initPrinter();
 void turnPrinterOn();
 void turnPrinterOff();

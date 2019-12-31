@@ -11,11 +11,6 @@
 
 #include <genesis.h>
 
-static const int COMMA_WAIT = 500;
-static const int MIDDLE_DOT_WAIT = 900;
-static const int PARAGRAPH_DOT_WAIT = 1250;
-static const int FULL_STOP_WAIT = 3000;
-
 static void printFlynnSpeech();
 static void printArchitectSpeech();
 
@@ -43,12 +38,12 @@ static void printFlynnSpeech() {
 
 	print("The Grid.");
 	waitMs(MIDDLE_DOT_WAIT);
-	print(" A digital frontier.");
+	println(" A digital frontier.");
 	waitMs(MIDDLE_DOT_WAIT);
-	println("");
-	print("I tried to picture clusters of information as they moved through the computer.");
+
+	println("I tried to picture clusters of information as they moved through the computer.");
 	waitMs(MIDDLE_DOT_WAIT);
-	println("");
+
 	println("");
 	print("What did they look like?");
 	waitMs(COMMA_WAIT);
@@ -56,13 +51,13 @@ static void printFlynnSpeech() {
 	waitMs(COMMA_WAIT);
 	print(" Motorcycles?");
 	waitMs(COMMA_WAIT);
-	print(" Were the circuits like freeways?");
+	println(" Were the circuits like freeways?");
 	waitMs(MIDDLE_DOT_WAIT);
+
 	println("");
-	println("");
-	print("I kept dreaming of a world I thought I'd never see.");
+	println("I kept dreaming of a world I thought I'd never see.");
 	waitMs(MIDDLE_DOT_WAIT);
-	println("");
+
 	println("");
 	print("And then,");
 	waitMs(COMMA_WAIT);
