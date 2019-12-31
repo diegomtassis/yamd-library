@@ -26,7 +26,6 @@ int main(u16 hard) {
 		printDisclaimer();
 		JOY_waitPress(JOY_1, BUTTON_BTN);
 		clearDisclaimer();
-
 		waitMs(50);
 	}
 
@@ -37,6 +36,7 @@ int main(u16 hard) {
 	while (1) {
 
 		// log_memory();
+		waitMs(250);
 		const Config* config = setUpTest();
 		runTest(config);
 

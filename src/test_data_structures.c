@@ -1,5 +1,5 @@
 /*
- * test_lists.c
+ * test_data_structures.c
  *
  *  Created on: Dec 24, 2019
  *      Author: diegomtassis
@@ -11,7 +11,7 @@
 
 void testLists() {
 
-	KLog("testing lists");
+	KLog("testing data structures");
 
 	VDP_setTextPalette(PAL2);
 	VDP_clearPlan(VDP_getTextPlan(), TRUE);
@@ -19,7 +19,7 @@ void testLists() {
 	clearScreen();
 	printerOn();
 
-	print("Lists test scenario not implemented yet.");
+	print("Data structures test scenario not implemented yet.");
 
 	waitMs(3000);
 	printerOff();

@@ -17,7 +17,7 @@ void runTest(const Config* config) {
 	assert(config->test, "No test set");
 
 	switch (config->test) {
-	case LISTS:
+	case DATA_STRUCTURES:
 		testLists();
 		break;
 

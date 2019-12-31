@@ -19,7 +19,7 @@ void printDisclaimer() {
 	printerOn();
 	waitMs(WAIT_1100);
 
-	print("Program: YAMD-library test");
+	print("Program: YaMDl test suite");
 	waitMs(WAIT_750);
 
 	println("");

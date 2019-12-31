@@ -12,10 +12,10 @@
 #include "../inc/fwk/assert.h"
 #include "../inc/fwk/commons.h"
 
-static const char* TEXT_YAMDL = "Yet Another MegaDrive Library";
-static const char* TEXT_TEST_SUITE = "Test Suite";
-static const char* TEXT_LISTS = "Lists";
-static const char* TEXT_PHYSICS = "2D Physics";
+static const char* TEXT_YAMDL = "Yet another MegaDrive library";
+static const char* TEXT_TEST_SUITE = "YaMDl test suite";
+static const char* TEXT_DATA_STRUCTURES = "Data structures";
+static const char* TEXT_PHYSICS = "2D physics";
 static const char* TEXT_SPATIAL_GRID = "Spatial grid";
 static const char* TEXT_PRINTER = "Printer";
 
@@ -32,7 +32,7 @@ static void changeTest(Config config[static 1]);
 static void joyEvent(u16 joy, u16 changed, u16 state);
 
 volatile enum option {
-	OPTION_LISTS, //
+	OPTION_DATA_STRUCTURES, //
 	OPTION_PHYSICS, //
 	OPTION_SPATIAL_GRID, //
 	OPTION_PRINTER, //
@@ -47,7 +47,7 @@ const V2u16 pos_init = { .x = 2, .y = 2 };
 
 void initConfig() {
 
-	// whatever is the current config is trash, no need to free
+	// whatever is the current config, it is trash, no need to free
 	current_config = 0;
 }
 
@@ -59,7 +59,7 @@ const Config* setUpTest() {
 
 	if (!current_config) {
 		current_config = MEM_calloc(sizeof(*current_config));
-		current_config->test = LISTS;
+		current_config->test = DATA_STRUCTURES;
 	}
 
 	initConfigScreen();
@@ -73,6 +73,8 @@ const Config* setUpTest() {
 		displayConfig(*current_config, pos_init);
 		VDP_waitVSync();
 	} while (!start);
+
+	JOY_setEventHandler(0);
 
 	setRandomSeed(getTick());
 
@@ -111,7 +113,7 @@ static void displayConfig(Config config, V2u16 pos) {
 		VDP_drawText(TEXT_TEST_SUITE, pos.x, pos.y);
 
 		pos.y += 4;
-		displayOption(TEXT_LISTS, 0, current_option == OPTION_LISTS, pos.x, pos.y);
+		displayOption(TEXT_DATA_STRUCTURES, 0, current_option == OPTION_DATA_STRUCTURES, pos.x, pos.y);
 		pos.y += 2;
 		displayOption(TEXT_PHYSICS, 0, current_option == OPTION_PHYSICS, pos.x, pos.y);
 		pos.y += 2;
@@ -137,8 +139,8 @@ static void displayOption(const char *option, const char *value, u8 highlighted,
 static void changeTest(Config config[static 1]) {
 
 	switch (current_option) {
-	case OPTION_LISTS:
-		config->test = LISTS;
+	case OPTION_DATA_STRUCTURES:
+		config->test = DATA_STRUCTURES;
 		break;
 
 	case OPTION_PHYSICS:
@@ -164,7 +166,7 @@ static void joyEvent(u16 joy, u16 changed, u16 state) {
 	if (BUTTON_DOWN & changed & ~state) {
 
 		if (current_option == OPTION_PRINTER) {
-			current_option = OPTION_LISTS;
+			current_option = OPTION_DATA_STRUCTURES;
 		} else {
 			current_option++;
 		}
@@ -173,7 +175,7 @@ static void joyEvent(u16 joy, u16 changed, u16 state) {
 	}
 
 	if (BUTTON_UP & changed & ~state) {
-		if (current_option == OPTION_LISTS) {
+		if (current_option == OPTION_DATA_STRUCTURES) {
 			current_option = OPTION_PRINTER;
 		} else {
 			current_option--;

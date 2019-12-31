@@ -11,7 +11,7 @@
 #include "elements.h"
 
 typedef enum {
-	LISTS = 1, //
+	DATA_STRUCTURES = 1, //
 	PHYSICS, //
 	SPATIAL_GRID, //
 	PRINTER, //
