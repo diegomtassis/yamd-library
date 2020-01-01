@@ -4,7 +4,7 @@ Sega Mega Drive utility library written by diegomtassis as an extension to SGDK.
 
 It's currently, and will always be, work in progress.
 
-Utilities here have been created as they are needed for games development, and they are generic enough to be extracted to a multipurpose library.
+Utilities here have been created when needed for games development, and they are generic enough to be extracted to a multipurpose library.
 
 Feel free to use whatever you need for your game. Pull requests are welcome.
 
