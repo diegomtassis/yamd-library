@@ -85,7 +85,7 @@ bool shareBase(Box_s16 subject_box, Box_s16 object_box) {
 bool hitAbove(Box_s16 subject_box, Box_s16 object_box) {
 
 	if (OVERLAPPED & axisXBoxRelativePos(subject_box, object_box)) {
-		return IN_BETWEEN & axisYPxRelativePos(subject_box.max.y, object_box);
+		return IN_BETWEEN & axisYPxRelativePos(subject_box.max.y + 1, object_box);
 	}
 
 	return FALSE;
@@ -94,7 +94,7 @@ bool hitAbove(Box_s16 subject_box, Box_s16 object_box) {
 bool hitUnder(Box_s16 subject_box, Box_s16 object_box) {
 
 	if (OVERLAPPED & axisXBoxRelativePos(subject_box, object_box)) {
-		return IN_BETWEEN & axisYPxRelativePos(subject_box.min.y, object_box);
+		return IN_BETWEEN & axisYPxRelativePos(subject_box.min.y - 1, object_box);
 	}
 
 	return FALSE;
@@ -103,7 +103,7 @@ bool hitUnder(Box_s16 subject_box, Box_s16 object_box) {
 bool hitLeft(Box_s16 subject_box, Box_s16 object_box) {
 
 	if (OVERLAPPED & axisYBoxRelativePos(subject_box, object_box)) {
-		return IN_BETWEEN & axisXPxRelativePos(subject_box.max.x, object_box);
+		return IN_BETWEEN & axisXPxRelativePos(subject_box.max.x + 1, object_box);
 	}
 
 	return FALSE;
@@ -112,7 +112,7 @@ bool hitLeft(Box_s16 subject_box, Box_s16 object_box) {
 bool hitRight(Box_s16 subject_box, Box_s16 object_box) {
 
 	if (OVERLAPPED & axisYBoxRelativePos(subject_box, object_box)) {
-		return IN_BETWEEN & axisXPxRelativePos(subject_box.min.x, object_box);
+		return IN_BETWEEN & axisXPxRelativePos(subject_box.min.x - 1, object_box);
 	}
 
 	return FALSE;
