@@ -83,6 +83,13 @@ static void runPhysicsSanbox() {
 	blue_block_spr = SPR_addSprite(&blue_block_sprite, 70, 100, TILE_ATTR(PAL0, TRUE, FALSE, FALSE));
 
 	// initialize the green block: object and sprite
+	green_block.pos.x = FIX16(210);
+	green_block.pos.y = FIX16(100);
+	green_block.size.x = 32;
+	green_block.size.y = 32;
+	green_block.box.w = 32;
+	green_block.box.h = 32;
+	updateBox(&green_block);
 	green_block_spr = SPR_addSprite(&green_block_sprite, 210, 100, TILE_ATTR(PAL0, TRUE, FALSE, FALSE));
 
 	while (!exit) {
@@ -97,7 +104,6 @@ static void runPhysicsSanbox() {
 		} else {
 			cross.mov.x = -SPEED;
 		}
-		cross.pos.x += cross.mov.x;
 
 		if (!order.y) {
 			cross.mov.y = 0;
@@ -106,11 +112,40 @@ static void runPhysicsSanbox() {
 		} else {
 			cross.mov.y = -SPEED;
 		}
-		cross.pos.y += cross.mov.y;
+
+		// handle collision with green box
+		Box_s16 target_h_box = targetHBox(cross);
+		if (hitRight(target_h_box, green_block.box)) {
+			cross.pos.x = FIX16(adjacentXOnTheRight(target_h_box, green_block.box));
+			cross.mov.x = 0;
+
+		} else if (hitLeft(target_h_box, green_block.box)) {
+			cross.pos.x = FIX16(adjacentXOnTheLeft(target_h_box, green_block.box));
+			cross.mov.x = 0;
+
+		} else {
+			cross.pos.x += cross.mov.x;
+		}
+
+		Box_s16 target_v_box = targetVBox(cross);
+		if (hitAbove(target_v_box, green_block.box)) {
+			cross.pos.y = FIX16(adjacentYAbove(target_v_box, green_block.box));
+			cross.mov.y = 0;
+
+		} else if (hitUnder(target_v_box, green_block.box)) {
+
+			cross.pos.y = FIX16(adjacentYUnder(target_v_box, green_block.box));
+			cross.mov.y = 0;
+
+		} else {
+			cross.pos.y += cross.mov.y;
+		}
 
 		updateBox(&cross);
+
 		SPR_setPosition(cross_spr, fix16ToInt(cross.pos.x), fix16ToInt(cross.pos.y));
 
+		// handle overlapping with blue box
 		if (overlap(cross.box, blue_block.box)) {
 			SPR_setFrame(blue_block_spr, 1);
 		} else {
