@@ -4,9 +4,9 @@ Sega Mega Drive utility library written by diegomtassis as an extension to SGDK.
 
 It's currently, and will always be, work in progress.
 
-Utilities here have been created as support for my own games development, and they have been extracted to a multipurpose library because they were generic enough.
+Utilities here have been created as they are needed for games development, and they are generic enough to be extracted to a multipurpose library.
 
-Feel free to use whatever you need for your game.
+Feel free to use whatever you need for your game. Pull requests are welcome.
 
 https://github.com/diegomtassis/yamd-library
 
@@ -22,19 +22,28 @@ Code is located under the fwk folder. As of now there are utilities covering mor
 * Position of individual pixels regarding AABBs.
 * Relative position between AABBs, including offsets.
 
+Code yet to be documented.
+
+
 ### Data structures
 
 * Simple fixed size list. The size is set before starting using the list.
+
+Code yet to be documented.
 
 
 ### Display printer
 
 * Supports typewriter effect.
 
+Code yet to be documented.
+
 
 ### Countdown
 
 * Simple countdown support using timers.
+
+Code yet to be documented.
 
 
 ## Yet to be implemented
@@ -51,6 +60,7 @@ This project includes a test suite which can be compiled into a rom and executed
 ## SGDK
 
 SGDK is a development kit for Sega Mega Drive created by Stephane Dallongeville
+
 https://stephane-d.github.io/SGDK/
 
 GitHub page: https://github.com/Stephane-D/SGDK

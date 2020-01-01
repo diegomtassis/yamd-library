@@ -21,6 +21,6 @@ void testSpatialGrid() {
 
 	print("Spatial Grid test scenario not implemented yet.");
 
-	waitMs(3000);
+	printerWait(3000);
 	turnPrinterOff();
 }

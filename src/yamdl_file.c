@@ -17,25 +17,25 @@ void printDisclaimer() {
 	VDP_setTextPalette(PAL2);
 
 	turnPrinterOn();
-	waitMs(WAIT_1100);
+	printerWait(WAIT_1100);
 
 	print("Program: YaMDl test suite");
-	waitMs(WAIT_750);
+	printerWait(WAIT_750);
 
 	println("");
 	println("");
 	print("Written by Diego Martin, 2019");
-	waitMs(WAIT_750);
+	printerWait(WAIT_750);
 
 	println("");
 	println("");
 	print("Work in progress");
-	waitMs(WAIT_750);
+	printerWait(WAIT_750);
 
 	println("");
 	println("");
 	print("This information priority one");
-	waitMs(WAIT_750);
+	printerWait(WAIT_750);
 
 	println("");
 	println("");

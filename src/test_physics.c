@@ -21,6 +21,6 @@ void testPhysics() {
 
 	print("Physics test scenario not implemented yet.");
 
-	waitMs(3000);
+	printerWait(3000);
 	turnPrinterOff();
 }
