@@ -55,7 +55,7 @@ s16 fixedlist_find_empty(FixedList* list) {
 		return -1;
 	}
 
-	for (int idx = 0; idx < list->size; idx++) {
+	for (s16 idx = 0; idx < list->size; idx++) {
 		if (!list->e[idx]) {
 			return idx;
 		}
@@ -70,7 +70,7 @@ s16 fixedlist_find(FixedList* list, void* e) {
 		return -1;
 	}
 
-	for (int idx = 0; idx < list->size; idx++) {
+	for (s16 idx = 0; idx < list->size; idx++) {
 		if (list->e[idx] == e) {
 			return idx;
 		}
@@ -79,7 +79,7 @@ s16 fixedlist_find(FixedList* list, void* e) {
 	return -1;
 }
 
-void fixedlist_remove_at(FixedList* list, int pos) {
+void fixedlist_remove_at(FixedList* list, u16 pos) {
 
 	if (!list || list->count <= 0 || pos >= list->size || !list->e[pos]) {
 		return;

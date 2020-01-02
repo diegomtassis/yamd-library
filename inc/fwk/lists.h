@@ -19,7 +19,7 @@ typedef struct List {
 void fixedlist_init(FixedList* list, u8 size);
 void fixedlist_release(FixedList* list);
 s16 fixedlist_add(FixedList* list, void* e);
-void fixedlist_remove_at(FixedList* list, int idx);
+void fixedlist_remove_at(FixedList* list, u16 idx);
 s16 fixedlist_find_empty(FixedList* list);
 s16 fixedlist_find(FixedList* list, void* e);
 
