@@ -6,7 +6,8 @@ It's currently, and will always be, work in progress.
 
 Utilities here have been created when needed for games development, and they are generic enough to be extracted to a multipurpose library.
 
-Feel free to use whatever you need for your game. Pull requests are welcome.
+Feel free to use whatever you need for your game.
+Pull requests are welcome.
 
 https://github.com/diegomtassis/yamd-library
 
@@ -28,8 +29,7 @@ Code yet to be documented.
 ### Data structures
 
 * Simple fixed size list. The size is set before starting using the list.
-
-Code yet to be documented.
+* Doubly linked list.
 
 
 ### Display printer
@@ -49,7 +49,7 @@ Code yet to be documented.
 ## Yet to be implemented
 
 * Spatial grid indexing.
-* More complex data structures: Doubly linked list, ...
+* ...
 
 
 ## Test suite

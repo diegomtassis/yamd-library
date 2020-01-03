@@ -1,7 +1,7 @@
 /*
  * doubly_linked_list.h
  *
- *  Created on: Dec 23, 2019
+ *  Created on: Jan 3, 2020
  *      Author: diegomtassis
  */
 
