@@ -35,6 +35,7 @@ DoublyLinkedListNode* doubly_linked_list_add(DoublyLinkedList* list, void* e) {
 	node->e = e;
 
 	if (list->first) {
+		list->last->next = node;
 		node->prev = list->last;
 		list->last = node;
 
@@ -68,9 +69,11 @@ DoublyLinkedListNode* doubly_linked_list_find(DoublyLinkedList* list, void* e) {
 
 void doubly_linked_list_remove(DoublyLinkedList* list, DoublyLinkedListNode* node) {
 
-	if (!node) {
+	if (!list || !node || !list->count) {
 		return;
 	}
+
+	// TODO check that the node belongs to the list
 
 	if (list->first == node) {
 		list->first = node->next;

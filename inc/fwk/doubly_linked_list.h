@@ -5,8 +5,8 @@
  *      Author: diegomtassis
  */
 
-#ifndef INC_FWK_FIXED_LIST_H_
-#define INC_FWK_FIXED_LIST_H_
+#ifndef INC_FWK_DOUBLY_LINKED_LIST_H_
+#define INC_FWK_DOUBLY_LINKED_LIST_H_
 
 #include <types.h>
 
