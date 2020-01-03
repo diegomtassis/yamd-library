@@ -127,7 +127,7 @@ void print(const char* text) {
 
 	while (rest--) {
 
-		printChar(text, current++, rest == 1, pos);
+		printChar(text, current++, !rest, pos);
 		waitMs(WAIT_50);
 	}
 
