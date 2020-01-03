@@ -7,7 +7,7 @@
 
 #include <genesis.h>
 
-#include "../inc/fwk/lists.h"
+#include "../inc/fwk/fixed_list.h"
 #include "../inc/fwk/printer.h"
 
 static void testFixedList();

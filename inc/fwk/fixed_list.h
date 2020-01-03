@@ -1,16 +1,16 @@
 /*
- * lists.h
+ * fixed_list.h
  *
  *  Created on: Dec 23, 2019
  *      Author: diegomtassis
  */
 
-#ifndef INC_FWK_LISTS_H_
-#define INC_FWK_LISTS_H_
+#ifndef INC_FWK_FIXED_LIST_H_
+#define INC_FWK_FIXED_LIST_H_
 
 #include <types.h>
 
-typedef struct List {
+typedef struct {
 	u8 count;
 	u8 size;
 	void** e;
@@ -65,4 +65,4 @@ s16 fixedlist_find_empty(FixedList* list);
  */
 s16 fixedlist_find(FixedList* list, void* e);
 
-#endif /* INC_FWK_LISTS_H_ */
+#endif /* INC_FWK_FIXED_LIST_H_ */

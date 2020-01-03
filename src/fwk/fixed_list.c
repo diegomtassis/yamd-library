@@ -1,15 +1,14 @@
 /*
- * lists.c
+ * fixed_list.c
  *
  *  Created on: Dec 23, 2019
  *      Author: diegomtassis
  */
 
-#include "../../inc/fwk/lists.h"
-
 #include <genesis.h>
 
 #include "../../inc/fwk/commons.h"
+#include "../../inc/fwk/fixed_list.h"
 
 void fixedlist_init(FixedList* list, u8 size) {
 
