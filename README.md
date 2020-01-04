@@ -28,7 +28,7 @@ Code yet to be documented.
 
 ### Data structures
 
-* Simple fixed size list. The size is set before starting using the list.
+* Array fixed list. Uses a fixed size array as back storage. Size is set when the list is initialized.
 * Doubly linked list.
 
 

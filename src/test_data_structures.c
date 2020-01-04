@@ -7,14 +7,14 @@
 
 #include <genesis.h>
 
+#include "../inc/fwk/array_fixed_list.h"
 #include "../inc/fwk/doubly_linked_list.h"
-#include "../inc/fwk/fixed_list.h"
 #include "../inc/fwk/printer.h"
 
 static void testFixedList();
 static void testDoublyLinkedList();
 
-static void printFixedListState(FixedList* fixedList);
+static void printFixedListState(ArrayFixedList* fixedList);
 static void printDoublyLinkedListState(DoublyLinkedList* doublyLinkedList);
 
 void testDataStructures() {
@@ -31,64 +31,64 @@ static void testFixedList() {
 
 	turnPrinterOn();
 
-	println("Test FixedList");
+	println("Test ArrayFixedList");
 	println("");
 	printerWait(3000);
 
-	FixedList fixedList;
+	ArrayFixedList arrayList;
 
-	fixedlist_init(&fixedList, 10);
-	println("Created fixed list");
-	printFixedListState(&fixedList);
+	arrayFixedListInit(&arrayList, 5);
+	println("Created array fixed list");
+	printFixedListState(&arrayList);
 	printerWait(500);
 
 	char* foo = "foo";
-	fixedlist_add(&fixedList, foo);
+	arrayFixedListAdd(&arrayList, foo);
 	println("Added \"foo\"");
-	printFixedListState(&fixedList);
+	printFixedListState(&arrayList);
 	println("");
 	printerWait(1500);
 
 	char* bar = "bar";
-	fixedlist_add(&fixedList, bar);
+	arrayFixedListAdd(&arrayList, bar);
 	println("Added \"bar\"");
-	printFixedListState(&fixedList);
+	printFixedListState(&arrayList);
 	println("");
 	printerWait(1500);
 
-	s16 found = fixedlist_find(&fixedList, foo);
+	s16 found = arrayFixedListFind(&arrayList, foo);
 	print("Looking for \"foo\". Found in pos: ");
 	char value[5];
 	sprintf(value, "%d", found);
 	println(value);
-	printFixedListState(&fixedList);
+	printFixedListState(&arrayList);
 	println("");
 	printerWait(1500);
 
-	found = fixedlist_find_empty(&fixedList);
+	found = arrayFixedListFindEmpty(&arrayList);
 	print("Looking for first empty element. Found position: ");
 	sprintf(value, "%d", found);
 	println(value);
-	printFixedListState(&fixedList);
+	printFixedListState(&arrayList);
 	println("");
 	printerWait(1500);
 
-	fixedlist_remove_at(&fixedList, 0);
+	arrayFixedListRemoveAt(&arrayList, 0);
 	println("Removed element at position 0");
-	printFixedListState(&fixedList);
+	printFixedListState(&arrayList);
 	println("");
 	printerWait(1500);
 
 	char* foobar = "foobar";
-	fixedlist_add(&fixedList, foobar);
+	arrayFixedListAdd(&arrayList, foobar);
 	println("Added \"foobar\"");
-	printFixedListState(&fixedList);
+	printFixedListState(&arrayList);
 	println("");
 	printerWait(1500);
 
-	fixedlist_release(&fixedList);
+	arrayFixedListRelease(&arrayList);
 	println("Released list");
-	printFixedListState(&fixedList);
+	printFixedListState(&arrayList);
 
 	printerWait(5000);
 
@@ -105,46 +105,46 @@ static void testDoublyLinkedList() {
 
 	DoublyLinkedList doublyLinkedList;
 
-	doubly_linked_list_init(&doublyLinkedList);
+	doublyLinkedListInit(&doublyLinkedList);
 	println("Created doubly linked list");
 	printDoublyLinkedListState(&doublyLinkedList);
 	println("");
 	printerWait(1500);
 
 	char* foo = "foo";
-	doubly_linked_list_add(&doublyLinkedList, foo);
+	doublyLinkedListAdd(&doublyLinkedList, foo);
 	println("Added \"foo\"");
 	printDoublyLinkedListState(&doublyLinkedList);
 	println("");
 	printerWait(1500);
 
 	char* bar = "bar";
-	doubly_linked_list_add(&doublyLinkedList, bar);
+	doublyLinkedListAdd(&doublyLinkedList, bar);
 	println("Added \"bar\"");
 	printDoublyLinkedListState(&doublyLinkedList);
 	println("");
 	printerWait(1500);
 
-	DoublyLinkedListNode* found = doubly_linked_list_find(&doublyLinkedList, foo);
+	DoublyLinkedListNode* found = doublyLinkedListFind(&doublyLinkedList, foo);
 	println("Looking for \"foo\" and found");
 	printDoublyLinkedListState(&doublyLinkedList);
 	println("");
 	printerWait(1500);
 
-	doubly_linked_list_remove(&doublyLinkedList, found);
+	doublyLinkedListRemove(&doublyLinkedList, found);
 	println("Removed element successfully");
 	printDoublyLinkedListState(&doublyLinkedList);
 	println("");
 	printerWait(1500);
 
 	char* foobar = "foobar";
-	doubly_linked_list_add(&doublyLinkedList, foobar);
+	doublyLinkedListAdd(&doublyLinkedList, foobar);
 	println("Added \"foobar\"");
 	printDoublyLinkedListState(&doublyLinkedList);
 	println("");
 	printerWait(1500);
 
-	doubly_linked_list_release(&doublyLinkedList);
+	doublyLinkedListRelease(&doublyLinkedList);
 	println("Released list");
 	printDoublyLinkedListState(&doublyLinkedList);
 
@@ -153,11 +153,11 @@ static void testDoublyLinkedList() {
 	turnPrinterOff();
 }
 
-static void printFixedListState(FixedList* fixedList) {
+static void printFixedListState(ArrayFixedList* fixedList) {
 
 	char value[5];
 
-	println("FixedList state: ");
+	println("ArrayFixedList state: ");
 	print("size: ");
 	sprintf(value, "%02u", fixedList->size);
 	print(value);

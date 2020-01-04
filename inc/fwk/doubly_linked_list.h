@@ -17,6 +17,7 @@ struct DoublyLinkedListNode {
 	void* e;
 	DoublyLinkedListNode* prev;
 	DoublyLinkedListNode* next;
+	DoublyLinkedList* list;
 };
 
 struct DoublyLinkedList {
@@ -30,14 +31,14 @@ struct DoublyLinkedList {
  *
  * @param list
  */
-void doubly_linked_list_init(DoublyLinkedList* list);
+void doublyLinkedListInit(DoublyLinkedList* list);
 
 /**
  * @brief releases the list, removing all the nodes
  *
  * @param list
  */
-void doubly_linked_list_release(DoublyLinkedList* list);
+void doublyLinkedListRelease(DoublyLinkedList* list);
 
 /**
  * @brief adds an element at the end
@@ -46,7 +47,7 @@ void doubly_linked_list_release(DoublyLinkedList* list);
  * @param e
  * @return the node containing the element
  */
-DoublyLinkedListNode* doubly_linked_list_add(DoublyLinkedList* list, void* e);
+DoublyLinkedListNode* doublyLinkedListAdd(DoublyLinkedList* list, void* e);
 
 /**
  * @brief finds whether a given element exists in a list
@@ -55,7 +56,7 @@ DoublyLinkedListNode* doubly_linked_list_add(DoublyLinkedList* list, void* e);
  * @param e
  * @return the node containing the element
  */
-DoublyLinkedListNode* doubly_linked_list_find(DoublyLinkedList* list, void* e);
+DoublyLinkedListNode* doublyLinkedListFind(DoublyLinkedList* list, void* e);
 
 /**
  * @brief removes a node form a list
@@ -63,6 +64,6 @@ DoublyLinkedListNode* doubly_linked_list_find(DoublyLinkedList* list, void* e);
  * @param list
  * @param node
  */
-void doubly_linked_list_remove(DoublyLinkedList* list, DoublyLinkedListNode* node);
+void doublyLinkedListRemove(DoublyLinkedList* list, DoublyLinkedListNode* node);
 
 #endif /* INC_FWK_DOUBLY_LINKED_LIST_H_ */

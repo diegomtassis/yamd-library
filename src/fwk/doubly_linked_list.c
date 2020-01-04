@@ -11,17 +11,17 @@
 
 #include "../../inc/fwk/commons.h"
 
-void doubly_linked_list_init(DoublyLinkedList* list) {
+void doublyLinkedListInit(DoublyLinkedList* list) {
 
 	list->first = 0;
 	list->last = 0;
 	list->count = 0;
 }
 
-void doubly_linked_list_release(DoublyLinkedList* list) {
+void doublyLinkedListRelease(DoublyLinkedList* list) {
 
 	while (list->first) {
-		doubly_linked_list_remove(list, list->first);
+		doublyLinkedListRemove(list, list->first);
 	}
 
 	list->first = 0;
@@ -29,10 +29,11 @@ void doubly_linked_list_release(DoublyLinkedList* list) {
 	list->count = 0;
 }
 
-DoublyLinkedListNode* doubly_linked_list_add(DoublyLinkedList* list, void* e) {
+DoublyLinkedListNode* doublyLinkedListAdd(DoublyLinkedList* list, void* e) {
 
 	DoublyLinkedListNode* node = MEM_calloc(sizeof(*node));
 	node->e = e;
+	node->list = list;
 
 	if (list->first) {
 		list->last->next = node;
@@ -49,7 +50,7 @@ DoublyLinkedListNode* doubly_linked_list_add(DoublyLinkedList* list, void* e) {
 	return node;
 }
 
-DoublyLinkedListNode* doubly_linked_list_find(DoublyLinkedList* list, void* e) {
+DoublyLinkedListNode* doublyLinkedListFind(DoublyLinkedList* list, void* e) {
 
 	if (!list || !e) {
 		return 0;
@@ -67,9 +68,9 @@ DoublyLinkedListNode* doubly_linked_list_find(DoublyLinkedList* list, void* e) {
 	return 0;
 }
 
-void doubly_linked_list_remove(DoublyLinkedList* list, DoublyLinkedListNode* node) {
+void doublyLinkedListRemove(DoublyLinkedList* list, DoublyLinkedListNode* node) {
 
-	if (!list || !node || !list->count) {
+	if (!list || !node || !list->count || node->list != list) {
 		return;
 	}
 
@@ -84,6 +85,7 @@ void doubly_linked_list_remove(DoublyLinkedList* list, DoublyLinkedListNode* nod
 	}
 
 	node->e = 0;
+	node->list = 0;
 	node->prev = 0;
 	node->next = 0;
 
