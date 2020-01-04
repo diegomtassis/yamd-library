@@ -12,6 +12,7 @@
 #include "../inc/fwk/printer.h"
 #include "../inc/fwk/spatial_grid.h"
 
+static void printSpatialGridLayout(SpatialGrid* grid);
 static void printSpatialGridState(SpatialGrid* grid);
 
 void testSpatialGrid() {
@@ -28,19 +29,22 @@ void testSpatialGrid() {
 	println("");
 	printerWait(3000);
 
-	spatialGridInit(&spatial_grid, 3, 2);
-	assert(spatial_grid.dimension.x == 3, "wrong size");
+	spatialGridInit(&spatial_grid, 2, 2);
+	assert(spatial_grid.dimension.x == 2, "wrong size");
 	assert(spatial_grid.dimension.y == 2, "wrong size");
 	assert(spatial_grid.cells != 0, "memory for lists not allocated");
 	println("Initialized spatial grid");
+	printSpatialGridLayout(&spatial_grid);
+	println("");
 	printSpatialGridState(&spatial_grid);
 	println("");
 	printerWait(1500);
 
-	Box_s16 objects[10];
+	u8 num_objects = 2;
+	Box_s16 objects[num_objects];
 
 	// initialize the objects boxes
-	for (int idx = 0; idx < 10; idx++) {
+	for (int idx = 0; idx < num_objects; idx++) {
 
 		// TODO do it randomly
 		objects[idx].min.x = idx;
@@ -74,6 +78,51 @@ void testSpatialGrid() {
 	turnPrinterOff();
 }
 
+static void printSpatialGridLayout(SpatialGrid* grid) {
+
+	char value[5];
+
+	u8 dim_x = grid->dimension.x;
+	u8 dim_y = grid->dimension.y;
+
+	println("SpatialGrid layout: ");
+
+	print("dim x=");
+	sprintf(value, "%01u", dim_x);
+	print(value);
+	print(", dim y=");
+	sprintf(value, "%01u", dim_y);
+	println(value);
+
+	if (grid->cells) {
+		for (int x = 0; x < dim_x; x++) {
+			for (int y = 0; y < dim_y; y++) {
+				print("Cell [");
+				sprintf(value, "%01u", x);
+				print(value);
+				print(",");
+				sprintf(value, "%01u", y);
+				print(value);
+				print("]: min.x=");
+				sprintf(value, "%02d", grid->cells[x][y].aabb.min.x);
+				print(value);
+				print(", min.y=");
+				sprintf(value, "%02d", grid->cells[x][y].aabb.min.y);
+				print(value);
+				print(", max.x=");
+				sprintf(value, "%02d", grid->cells[x][y].aabb.max.x);
+				print(value);
+				print(", max.y=");
+				sprintf(value, "%02d", grid->cells[x][y].aabb.max.y);
+				print(value);
+				println("");
+			}
+		}
+	} else {
+		println(", no cells");
+	}
+}
+
 static void printSpatialGridState(SpatialGrid* grid) {
 
 	char value[5];
@@ -82,14 +131,7 @@ static void printSpatialGridState(SpatialGrid* grid) {
 	u8 dim_y = grid->dimension.y;
 
 	println("SpatialGrid state: ");
-	print("dim x=");
-	sprintf(value, "%01u", grid->dimension.x);
-	print(value);
-	print(", dim y=");
-	sprintf(value, "%01u", grid->dimension.y);
-
 	if (grid->cells) {
-		println(value);
 		for (int x = 0; x < dim_x; x++) {
 			for (int y = 0; y < dim_y; y++) {
 				print("Cell [");
@@ -107,4 +149,3 @@ static void printSpatialGridState(SpatialGrid* grid) {
 		println(", no cells");
 	}
 }
-

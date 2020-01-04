@@ -7,8 +7,6 @@
 
 #include "../../inc/fwk/physics.h"
 
-static void updateBoxMax(Box_s16* box);
-
 void updateBox(Object_f16* object) {
 
 	object->box.min.x = fix16ToInt(object->pos.x);
@@ -46,7 +44,7 @@ Box_s16 targetVBox(Object_f16 object) {
 	return box;
 }
 
-static void updateBoxMax(Box_s16* box) {
+void updateBoxMax(Box_s16* box) {
 
 	box->max.x = box->min.x + box->w - 1;
 	box->max.y = box->min.y + box->h - 1;

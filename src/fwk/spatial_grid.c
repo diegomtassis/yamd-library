@@ -17,10 +17,20 @@ void spatialGridInit(SpatialGrid* grid, u8 dim_x, u8 dim_y) {
 	grid->dimension.x = dim_x;
 	grid->dimension.y = dim_y;
 
+	u16 cell_width = VDP_getScreenWidth() / dim_x;
+	u16 cell_height = VDP_getScreenHeight() / dim_y;
+
 	grid->cells = MEM_calloc((sizeof(DoublyLinkedList)) * dim_x);
 	for (int x = 0; x < dim_x; x++) {
+
 		grid->cells[x] = MEM_calloc((sizeof(DoublyLinkedList)) * dim_y);
 		for (int y = 0; y < dim_y; y++) {
+
+			setV2s16(&grid->cells[x][y].aabb.min, cell_width * x, cell_height * y);
+			grid->cells[x][y].aabb.w = cell_width;
+			grid->cells[x][y].aabb.h = cell_height;
+			updateBoxMax(&grid->cells[x][y].aabb);
+
 			doublyLinkedListInit(&grid->cells[x][y].e);
 		}
 	}

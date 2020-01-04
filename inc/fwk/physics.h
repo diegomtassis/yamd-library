@@ -42,6 +42,7 @@ typedef struct {
 } Object_f16;
 
 void updateBox(Object_f16* object);
+void updateBoxMax(Box_s16* box);
 
 Box_s16 targetBox(Object_f16 subject);
 Box_s16 targetHBox(Object_f16 subject);
