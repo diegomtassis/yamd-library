@@ -74,14 +74,18 @@ void doublyLinkedListRemove(DoublyLinkedList* list, DoublyLinkedListNode* node) 
 		return;
 	}
 
-	// TODO check that the node belongs to the list
-
 	if (list->first == node) {
 		list->first = node->next;
+		if (list->first) {
+			list->first->prev = 0;
+		}
 	}
 
 	if (list->last == node) {
 		list->last = node->prev;
+		if (list->last) {
+			list->last->next = 0;
+		}
 	}
 
 	node->e = 0;
