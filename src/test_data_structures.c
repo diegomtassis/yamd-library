@@ -41,7 +41,7 @@ static void testFixedList() {
 	arrayFixedListInit(&arrayList, 5);
 	assert(arrayList.size == 5, "wrong size");
 	assert(arrayList.count == 0, "wrong count");
-	assert(arrayList.e, "array not initialized");
+	assert(arrayList.e != 0, "array not initialized");
 	println("Created array fixed list");
 	printFixedListState(&arrayList);
 	printerWait(1500);
@@ -159,7 +159,7 @@ static void testDoublyLinkedList() {
 	printerWait(1500);
 
 	DoublyLinkedListNode* found = doublyLinkedListFind(&doublyLinkedList, foo);
-	assert(found, "not found");
+	assert(found != 0, "not found");
 	assert(found->e == foo, "found wrong node");
 	println("Found \"foo\"");
 	printDoublyLinkedListState(&doublyLinkedList);

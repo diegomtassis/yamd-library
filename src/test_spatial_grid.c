@@ -28,10 +28,10 @@ void testSpatialGrid() {
 	println("");
 	printerWait(3000);
 
-	spatialGridInit(&spatial_grid, 2, 2);
-	assert(spatial_grid.dimension.x == 2, "wrong size");
+	spatialGridInit(&spatial_grid, 3, 2);
+	assert(spatial_grid.dimension.x == 3, "wrong size");
 	assert(spatial_grid.dimension.y == 2, "wrong size");
-	assert(spatial_grid.e, "memory for lists not allocated");
+	assert(spatial_grid.cells != 0, "memory for lists not allocated");
 	println("Initialized spatial grid");
 	printSpatialGridState(&spatial_grid);
 	println("");
@@ -65,7 +65,7 @@ void testSpatialGrid() {
 	spatialGridRelease(&spatial_grid);
 	assert(spatial_grid.dimension.x == 0, "wrong size");
 	assert(spatial_grid.dimension.y == 0, "wrong size");
-	assert(!spatial_grid.e, "memory for lists not released");
+	assert(!spatial_grid.cells, "memory for lists not released");
 	println("Released spatial grid");
 	printSpatialGridState(&spatial_grid);
 	println("");
@@ -83,23 +83,23 @@ static void printSpatialGridState(SpatialGrid* grid) {
 
 	println("SpatialGrid state: ");
 	print("dim x=");
-	sprintf(value, "%02u", grid->dimension.x);
+	sprintf(value, "%01u", grid->dimension.x);
 	print(value);
 	print(", dim y=");
-	sprintf(value, "%02u", grid->dimension.y);
+	sprintf(value, "%01u", grid->dimension.y);
 
-	if (grid->e) {
+	if (grid->cells) {
 		println(value);
 		for (int x = 0; x < dim_x; x++) {
 			for (int y = 0; y < dim_y; y++) {
 				print("Cell [");
-				sprintf(value, "%02u", x);
+				sprintf(value, "%01u", x);
 				print(value);
 				print(",");
-				sprintf(value, "%02u", y);
+				sprintf(value, "%01u", y);
 				print(value);
 				print("]: count = ");
-				sprintf(value, "%02u", grid->e[x][y].count);
+				sprintf(value, "%02u", grid->cells[x][y].e.count);
 				println(value);
 			}
 		}

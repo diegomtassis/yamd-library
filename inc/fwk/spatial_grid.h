@@ -13,10 +13,18 @@
 #include "doubly_linked_list.h"
 #include "physics.h"
 
-typedef struct {
+typedef struct SpatialGrid SpatialGrid;
+typedef struct SpatialGridCell SpatialGridCell;
+
+struct SpatialGridCell {
+	Box_s16 aabb;
+	DoublyLinkedList e;
+};
+
+struct SpatialGrid {
 	V2s16 dimension;
-	DoublyLinkedList** e;
-} SpatialGrid;
+	SpatialGridCell** cells;
+};
 
 void spatialGridInit(SpatialGrid* grid, u8 dim_x, u8 dim_y);
 void spatialGridRelease(SpatialGrid* grid);

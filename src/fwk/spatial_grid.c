@@ -17,11 +17,11 @@ void spatialGridInit(SpatialGrid* grid, u8 dim_x, u8 dim_y) {
 	grid->dimension.x = dim_x;
 	grid->dimension.y = dim_y;
 
-	grid->e = MEM_calloc((sizeof(DoublyLinkedList)) * dim_x);
+	grid->cells = MEM_calloc((sizeof(DoublyLinkedList)) * dim_x);
 	for (int x = 0; x < dim_x; x++) {
-		grid->e[x] = MEM_calloc((sizeof(DoublyLinkedList)) * dim_y);
+		grid->cells[x] = MEM_calloc((sizeof(DoublyLinkedList)) * dim_y);
 		for (int y = 0; y < dim_y; y++) {
-			doublyLinkedListInit(&grid->e[x][y]);
+			doublyLinkedListInit(&grid->cells[x][y].e);
 		}
 	}
 }
@@ -32,13 +32,16 @@ void spatialGridRelease(SpatialGrid* grid) {
 		return;
 	}
 
-	if (grid->e) {
+	if (grid->cells) {
 		for (int x = 0; x < grid->dimension.x; x++) {
-			MEM_free(grid->e[x]);
+			for (int y = 0; y < grid->dimension.y; y++) {
+				doublyLinkedListRelease(&grid->cells[x][y].e);
+			}
+			MEM_free(grid->cells[x]);
 		}
 
-		MEM_free(grid->e);
-		grid->e = 0;
+		MEM_free(grid->cells);
+		grid->cells = 0;
 	}
 
 	grid->dimension.x = 0;
