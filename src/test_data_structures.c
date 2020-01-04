@@ -39,72 +39,72 @@ static void testFixedList() {
 	ArrayFixedList arrayList;
 
 	arrayFixedListInit(&arrayList, 5);
-	println("Created array fixed list");
 	assert(arrayList.size == 5, "wrong size");
 	assert(arrayList.count == 0, "wrong count");
 	assert(arrayList.e, "array not initialized");
+	println("Created array fixed list");
 	printFixedListState(&arrayList);
-	printerWait(500);
+	printerWait(1500);
 
 	char* foo = "foo";
 	arrayFixedListAdd(&arrayList, foo);
-	println("Added \"foo\"");
 	assert(arrayList.count == 1, "wrong size");
 	assert(arrayList.e[0] == foo, "element not added");
+	println("Added \"foo\"");
 	printFixedListState(&arrayList);
 	printerWait(1500);
 
 	char* bar = "bar";
 	arrayFixedListAdd(&arrayList, bar);
-	println("Added \"bar\"");
 	assert(arrayList.count == 2, "wrong size");
 	assert(arrayList.e[1] == bar, "element not added");
+	println("Added \"bar\"");
 	printFixedListState(&arrayList);
 	printerWait(1500);
 
 	s16 found = arrayFixedListFind(&arrayList, foo);
-	print("Looking for \"foo\". Found in pos: ");
+	assert(found == 0, "wrong element found");
+	print("Found \"foo\" in index: ");
 	char value[5];
 	sprintf(value, "%d", found);
 	println(value);
-	assert(found == 0, "wrong element found");
 	printFixedListState(&arrayList);
 	printerWait(1500);
 
 	found = arrayFixedListFind(&arrayList, "foobar");
-	println("Looking for \"foobar\". Not found");
 	assert(found == -1, "element found");
+	println("Looking for \"foobar\". Not found");
 	printFixedListState(&arrayList);
 	printerWait(1500);
 
 	found = arrayFixedListFindEmpty(&arrayList);
-	print("Looking for first empty element. Found position: ");
+	assert(2 == found, "wrong index");
+	print("Looking for first empty element. Found at position: ");
 	sprintf(value, "%d", found);
 	println(value);
-	assert(2 == found, "wrong index");
 	printFixedListState(&arrayList);
 	printerWait(1500);
 
 	arrayFixedListRemoveAt(&arrayList, 0);
-	println("Removed element at position 0");
 	assert(arrayList.count == 1, "wrong size");
 	assert(!arrayList.e[0], "element not removed");
+	println("Removed element at position 0");
 	printFixedListState(&arrayList);
 	printerWait(1500);
 
 	char* foobar = "foobar";
 	arrayFixedListAdd(&arrayList, foobar);
-	println("Added \"foobar\"");
 	assert(arrayList.count == 2, "wrong size");
 	assert(arrayList.e[0] == foobar, "element not added");
+	println("Added \"foobar\"");
 	printFixedListState(&arrayList);
 	printerWait(1500);
 
 	arrayFixedListRelease(&arrayList);
-	println("Released list");
 	assert(arrayList.size == 0, "wrong size");
 	assert(arrayList.count == 0, "wrong count");
 	assert(!arrayList.e, "array not released");
+	println("Released list");
 	printFixedListState(&arrayList);
 
 	printerWait(5000);
@@ -123,10 +123,10 @@ static void testDoublyLinkedList() {
 	DoublyLinkedList doublyLinkedList;
 
 	doublyLinkedListInit(&doublyLinkedList);
-	println("Created doubly linked list");
 	assert(doublyLinkedList.count == 0, "wrong count");
 	assert(!doublyLinkedList.first, "wrong first");
 	assert(!doublyLinkedList.last, "wrong last");
+	println("Created doubly linked list");
 	printDoublyLinkedListState(&doublyLinkedList);
 	println("");
 	printerWait(1500);
@@ -134,67 +134,67 @@ static void testDoublyLinkedList() {
 	DoublyLinkedListNode* node;
 	char* foo = "foo";
 	node = doublyLinkedListAdd(&doublyLinkedList, foo);
-	println("Added \"foo\"");
 	assert(doublyLinkedList.count == 1, "wrong count");
 	assert(doublyLinkedList.first == node, "wrong first");
 	assert(doublyLinkedList.last == node, "wrong last");
 	assert(node->e == foo, "wrong element");
 	assert(!node->prev, "wrong prev");
 	assert(!node->next, "wrong next");
+	println("Added \"foo\"");
 	printDoublyLinkedListState(&doublyLinkedList);
 	println("");
 	printerWait(1500);
 
 	char* bar = "bar";
 	node = doublyLinkedListAdd(&doublyLinkedList, bar);
-	println("Added \"bar\"");
 	assert(node->e == bar, "wrong element");
 	assert(node->prev && node->prev->e == foo, "wrong prev");
 	assert(!node->next, "wrong next");
 	assert(doublyLinkedList.count == 2, "wrong count");
 	assert(doublyLinkedList.last == node, "wrong last");
 	assert(doublyLinkedList.first->e == foo, "wrong first");
+	println("Added \"bar\"");
 	printDoublyLinkedListState(&doublyLinkedList);
 	println("");
 	printerWait(1500);
 
 	DoublyLinkedListNode* found = doublyLinkedListFind(&doublyLinkedList, foo);
-	println("Looking for \"foo\" and found");
 	assert(found, "not found");
 	assert(found->e == foo, "found wrong node");
+	println("Found \"foo\"");
 	printDoublyLinkedListState(&doublyLinkedList);
 	println("");
 	printerWait(1500);
 
 	doublyLinkedListRemove(&doublyLinkedList, found);
-	println("Removed element successfully");
 	assert(doublyLinkedList.count == 1, "wrong count");
 	assert(doublyLinkedList.first->e == bar, "wrong first");
 	assert(doublyLinkedList.last->e == bar, "wrong last");
 	assert(!doublyLinkedList.first->prev, "wrong bar prev");
 	assert(!doublyLinkedList.first->next, "wrong bar next");
+	println("Removed element successfully");
 	printDoublyLinkedListState(&doublyLinkedList);
 	println("");
 	printerWait(1500);
 
 	char* foobar = "foobar";
 	node = doublyLinkedListAdd(&doublyLinkedList, foobar);
-	println("Added \"foobar\"");
 	assert(node->e == foobar, "wrong element");
 	assert(node->prev && node->prev->e == bar, "wrong prev");
 	assert(!node->next, "wrong next");
 	assert(doublyLinkedList.count == 2, "wrong count");
 	assert(doublyLinkedList.last == node, "wrong last");
 	assert(doublyLinkedList.first->e == bar, "wrong first");
+	println("Added \"foobar\"");
 	printDoublyLinkedListState(&doublyLinkedList);
 	println("");
 	printerWait(1500);
 
 	doublyLinkedListRelease(&doublyLinkedList);
-	println("Released list");
 	assert(doublyLinkedList.count == 0, "wrong count");
 	assert(!doublyLinkedList.first, "wrong first");
 	assert(!doublyLinkedList.last, "wrong last");
+	println("Released list");
 	printDoublyLinkedListState(&doublyLinkedList);
 
 	printerWait(5000);
