@@ -31,14 +31,13 @@ void testSpatialGrid() {
 
 	spatialGridInit(&spatial_grid, 2, 2);
 
-	/*
 	assert(spatial_grid.dimension.x == 2, "wrong size");
 	assert(spatial_grid.dimension.y == 2, "wrong size");
 	assert(spatial_grid.cells != 0, "memory for lists not allocated");
 	println("Initialized spatial grid");
 	printSpatialGridLayout(&spatial_grid);
 	println("");
-//	printSpatialGridState(&spatial_grid);
+	printSpatialGridState(&spatial_grid);
 	println("");
 	printerWait(1500);
 
@@ -68,7 +67,7 @@ void testSpatialGrid() {
 		spatialGridIndex(&spatial_grid, objects[idx]);
 	}
 	println("AABBs successfully indexed");
-//	printSpatialGridState(&spatial_grid);
+	printSpatialGridState(&spatial_grid);
 	println("");
 	printSpatialGridLayout(&spatial_grid);
 	println("");
@@ -79,10 +78,8 @@ void testSpatialGrid() {
 	assert(spatial_grid.dimension.y == 0, "wrong size");
 	assert(!spatial_grid.cells, "memory for lists not released");
 	println("Released spatial grid");
-//	printSpatialGridState(&spatial_grid);
+	printSpatialGridState(&spatial_grid);
 	println("");
-
-*/
 
 	printerWait(5000);
 	turnPrinterOff();
@@ -131,8 +128,6 @@ static void printSpatialGridLayout(SpatialGrid* grid) {
 				sprintf(value, "%03d", box->max.y);
 				print(value);
 				println("]");
-
-				KLog_S4_("Cell  [", box->min.x, "-", box->max.x, ", ", box->min.y, "-", box->max.y, "]");
 			}
 		}
 	} else {
