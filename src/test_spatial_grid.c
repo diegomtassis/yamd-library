@@ -30,13 +30,15 @@ void testSpatialGrid() {
 	printerWait(3000);
 
 	spatialGridInit(&spatial_grid, 2, 2);
+
+	/*
 	assert(spatial_grid.dimension.x == 2, "wrong size");
 	assert(spatial_grid.dimension.y == 2, "wrong size");
 	assert(spatial_grid.cells != 0, "memory for lists not allocated");
 	println("Initialized spatial grid");
 	printSpatialGridLayout(&spatial_grid);
 	println("");
-	printSpatialGridState(&spatial_grid);
+//	printSpatialGridState(&spatial_grid);
 	println("");
 	printerWait(1500);
 
@@ -45,34 +47,42 @@ void testSpatialGrid() {
 
 	// initialize the objects boxes
 	for (int idx = 0; idx < num_objects; idx++) {
-
-		// TODO do it randomly
-		objects[idx].min.x = idx;
-		objects[idx].min.y = idx;
-		objects[idx].max.x = idx + 20;
-		objects[idx].max.y = idx + 20;
 		objects[idx].h = 24;
 		objects[idx].w = 16;
 	}
-	println("Created AABBs to be indexed in the grid");
+	println("Created AABBs");
 	println("");
 	printerWait(1500);
 
+	// put the objects somewhere in the screen
+	// TODO do it randomly
+	objects[0].min.x = 50;
+	objects[0].min.y = 50;
+	updateBoxMax(&objects[0]);
+	objects[1].min.x = 200;
+	objects[1].min.y = 150;
+	updateBoxMax(&objects[1]);
+
 	// index the objects
-//	for (int idx = 0; idx < 10; idx++) {
-//		spatialGridIndex(&spatial_grid, objects[idx]);
-//	}
-//	println("AABBs successfully indexed");
-//	println("");
-//	printerWait(1500);
+	for (int idx = 0; idx < num_objects; idx++) {
+		spatialGridIndex(&spatial_grid, objects[idx]);
+	}
+	println("AABBs successfully indexed");
+//	printSpatialGridState(&spatial_grid);
+	println("");
+	printSpatialGridLayout(&spatial_grid);
+	println("");
+	printerWait(1500);
 
 	spatialGridRelease(&spatial_grid);
 	assert(spatial_grid.dimension.x == 0, "wrong size");
 	assert(spatial_grid.dimension.y == 0, "wrong size");
 	assert(!spatial_grid.cells, "memory for lists not released");
 	println("Released spatial grid");
-	printSpatialGridState(&spatial_grid);
+//	printSpatialGridState(&spatial_grid);
 	println("");
+
+*/
 
 	printerWait(5000);
 	turnPrinterOff();
@@ -95,27 +105,34 @@ static void printSpatialGridLayout(SpatialGrid* grid) {
 	println(value);
 
 	if (grid->cells) {
+
+		Box_s16* box;
 		for (int x = 0; x < dim_x; x++) {
 			for (int y = 0; y < dim_y; y++) {
+
+				box = &grid->cells[x][y].aabb;
+
 				print("Cell [");
 				sprintf(value, "%01u", x);
 				print(value);
 				print(",");
 				sprintf(value, "%01u", y);
 				print(value);
-				print("]: min.x=");
-				sprintf(value, "%02d", grid->cells[x][y].aabb.min.x);
+				print("]: [");
+				sprintf(value, "%03d", box->min.x);
 				print(value);
-				print(", min.y=");
-				sprintf(value, "%02d", grid->cells[x][y].aabb.min.y);
+				print("-");
+				sprintf(value, "%03d", box->max.x);
 				print(value);
-				print(", max.x=");
-				sprintf(value, "%02d", grid->cells[x][y].aabb.max.x);
+				print(", ");
+				sprintf(value, "%03d", box->min.y);
 				print(value);
-				print(", max.y=");
-				sprintf(value, "%02d", grid->cells[x][y].aabb.max.y);
+				print("-");
+				sprintf(value, "%03d", box->max.y);
 				print(value);
-				println("");
+				println("]");
+
+				KLog_S4_("Cell  [", box->min.x, "-", box->max.x, ", ", box->min.y, "-", box->max.y, "]");
 			}
 		}
 	} else {

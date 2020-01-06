@@ -20,20 +20,46 @@ void spatialGridInit(SpatialGrid* grid, u8 dim_x, u8 dim_y) {
 	u16 cell_width = VDP_getScreenWidth() / dim_x;
 	u16 cell_height = VDP_getScreenHeight() / dim_y;
 
-	grid->cells = MEM_calloc((sizeof(DoublyLinkedList)) * dim_x);
+	grid->cells = MEM_calloc((sizeof (DoublyLinkedList*)) * dim_x);
+
 	for (int x = 0; x < dim_x; x++) {
 
 		grid->cells[x] = MEM_calloc((sizeof(DoublyLinkedList)) * dim_y);
+
 		for (int y = 0; y < dim_y; y++) {
-
-			setV2s16(&grid->cells[x][y].aabb.min, cell_width * x, cell_height * y);
-			grid->cells[x][y].aabb.w = cell_width;
-			grid->cells[x][y].aabb.h = cell_height;
-			updateBoxMax(&grid->cells[x][y].aabb);
-
-			doublyLinkedListInit(&grid->cells[x][y].e);
+			KLog_U1("box ", &grid->cells[x][y].aabb);
 		}
 	}
+
+//	Box_s16* box;
+//	for (int x = 0; x < dim_x; x++) {
+//
+//		grid->cells[x] = MEM_calloc((sizeof(DoublyLinkedList)) * dim_y);
+//
+//		for (int y = 0; y < dim_y; y++) {
+//
+//			box = &grid->cells[x][y].aabb;
+//
+//			setV2s16(&box->min, cell_width * x, cell_height * y);
+//			box->w = cell_width;
+//			box->h = cell_height;
+//			updateBoxMax(box);
+//
+//			KLog_U1("box ", box);
+//
+//			KLog_S4_("Created cell  [", box->min.x, "-", box->max.x, ", ", box->min.y, "-", box->max.y, "]");
+//
+////			doublyLinkedListInit(&grid->cells[x][y].e);
+//		}
+//	}
+
+//	for (int x = 0; x < dim_x; x++) {
+//		for (int y = 0; y < dim_y; y++) {
+//
+//			box = &grid->cells[x][y].aabb;
+//			KLog_S4_("Created cell  [", box->min.x, "-", box->max.x, ", ", box->min.y, "-", box->max.y, "]");
+//		}
+//	}
 }
 
 void spatialGridRelease(SpatialGrid* grid) {
@@ -45,7 +71,7 @@ void spatialGridRelease(SpatialGrid* grid) {
 	if (grid->cells) {
 		for (int x = 0; x < grid->dimension.x; x++) {
 			for (int y = 0; y < grid->dimension.y; y++) {
-				doublyLinkedListRelease(&grid->cells[x][y].e);
+//				doublyLinkedListRelease(&grid->cells[x][y].e);
 			}
 			MEM_free(grid->cells[x]);
 		}
@@ -60,4 +86,27 @@ void spatialGridRelease(SpatialGrid* grid) {
 
 void spatialGridIndex(SpatialGrid* grid, Box_s16 object) {
 
+	if (!grid) {
+		return;
+	}
+
+	if (grid->cells) {
+		for (int x = 0; x < grid->dimension.x; x++) {
+			for (int y = 0; y < grid->dimension.y; y++) {
+
+				SpatialGridCell cell = grid->cells[x][y];
+//				KLog_S4_("Attempting to index box [", object.min.x, "-", object.max.x, ", ", object.min.y, "-",
+//						object.max.y, "]");
+//				KLog_S4_("in cell [", object.min.x, "-", object.max.x, ", ", object.min.y, "-", object.max.y, "]");
+
+				if (overlap(cell.aabb, object)) {
+
+//					doublyLinkedListAdd(&cell.e, &object);
+					KLog("Indexed");
+				} else {
+					KLog("Not indexed");
+				}
+			}
+		}
+	}
 }
