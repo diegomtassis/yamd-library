@@ -71,7 +71,7 @@ void testSpatialGrid() {
 
 	// index the objects
 	for (int idx = 0; idx < num_objects; idx++) {
-		spatialGridIndex(&spatial_grid, objects[idx]);
+		spatialGridIndex(&spatial_grid, &objects[idx]);
 	}
 	assert(2 == spatial_grid.cells[0][0].e.count, "wrong count for cell [0][0]");
 	assert(1 == spatial_grid.cells[0][1].e.count, "wrong count for cell [0][1]");

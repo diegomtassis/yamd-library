@@ -29,7 +29,7 @@ void doublyLinkedListRelease(DoublyLinkedList* list) {
 	list->count = 0;
 }
 
-DoublyLinkedListNode* doublyLinkedListAdd(DoublyLinkedList* list, void* e) {
+DoublyLinkedListNode* doublyLinkedListAdd(DoublyLinkedList* list, const void* e) {
 
 	DoublyLinkedListNode* node = MEM_calloc(sizeof(*node));
 	node->e = e;
@@ -50,7 +50,7 @@ DoublyLinkedListNode* doublyLinkedListAdd(DoublyLinkedList* list, void* e) {
 	return node;
 }
 
-DoublyLinkedListNode* doublyLinkedListFind(DoublyLinkedList* list, void* e) {
+DoublyLinkedListNode* doublyLinkedListFind(DoublyLinkedList* list, const void* e) {
 
 	if (!list || !e) {
 		return 0;

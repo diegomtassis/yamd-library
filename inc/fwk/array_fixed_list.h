@@ -13,7 +13,7 @@
 typedef struct {
 	u8 count;
 	u8 size;
-	void** e;
+	const void** e;
 } ArrayFixedList;
 
 /**
@@ -38,7 +38,7 @@ void arrayFixedListRelease(ArrayFixedList* list);
  * @param e
  * @return pos where the element has been added, -1 otherwise
  */
-s16 arrayFixedListAdd(ArrayFixedList* list, void* e);
+s16 arrayFixedListAdd(ArrayFixedList* list, const void* e);
 
 /**
  * @brief removes the element at a given position
@@ -63,6 +63,6 @@ s16 arrayFixedListFindEmpty(ArrayFixedList* list);
  * @param e
  * @return position of the given element, -1 if it does not exist in the list
  */
-s16 arrayFixedListFind(ArrayFixedList* list, void* e);
+s16 arrayFixedListFind(ArrayFixedList* list, const void* e);
 
 #endif /* INC_FWK_ARRAY_FIXED_LIST_H_ */

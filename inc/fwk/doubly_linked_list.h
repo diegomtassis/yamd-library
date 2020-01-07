@@ -14,7 +14,7 @@ typedef struct DoublyLinkedList DoublyLinkedList;
 typedef struct DoublyLinkedListNode DoublyLinkedListNode;
 
 struct DoublyLinkedListNode {
-	void* e;
+	const void* e;
 	DoublyLinkedListNode* prev;
 	DoublyLinkedListNode* next;
 	DoublyLinkedList* list;
@@ -47,7 +47,7 @@ void doublyLinkedListRelease(DoublyLinkedList* list);
  * @param e
  * @return the node containing the element
  */
-DoublyLinkedListNode* doublyLinkedListAdd(DoublyLinkedList* list, void* e);
+DoublyLinkedListNode* doublyLinkedListAdd(DoublyLinkedList* list, const void* e);
 
 /**
  * @brief finds whether a given element exists in a list
@@ -56,7 +56,7 @@ DoublyLinkedListNode* doublyLinkedListAdd(DoublyLinkedList* list, void* e);
  * @param e
  * @return the node containing the element
  */
-DoublyLinkedListNode* doublyLinkedListFind(DoublyLinkedList* list, void* e);
+DoublyLinkedListNode* doublyLinkedListFind(DoublyLinkedList* list, const void* e);
 
 /**
  * @brief removes a node form a list

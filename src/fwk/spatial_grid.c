@@ -63,7 +63,7 @@ void spatialGridRelease(SpatialGrid* grid) {
 	grid->dimension.y = 0;
 }
 
-void spatialGridIndex(SpatialGrid* grid, Box_s16 object) {
+void spatialGridIndex(SpatialGrid* grid, const Box_s16* object) {
 
 	if (!grid) {
 		return;
@@ -74,8 +74,8 @@ void spatialGridIndex(SpatialGrid* grid, Box_s16 object) {
 			for (int y = 0; y < grid->dimension.y; y++) {
 
 				SpatialGridCell cell = grid->cells[x][y];
-				if (overlap(cell.aabb, object)) {
-					doublyLinkedListAdd(&grid->cells[x][y].e, &object); // somehow using &cell.e passes a wrong address for the list
+				if (overlap(&cell.aabb, object)) {
+					doublyLinkedListAdd(&grid->cells[x][y].e, object); // somehow using &cell.e passes a wrong address for the list
 				}
 			}
 		}

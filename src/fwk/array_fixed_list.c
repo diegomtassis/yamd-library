@@ -34,7 +34,7 @@ void arrayFixedListRelease(ArrayFixedList* list) {
 	list->size = 0;
 }
 
-s16 arrayFixedListAdd(ArrayFixedList* list, void* e) {
+s16 arrayFixedListAdd(ArrayFixedList* list, const void* e) {
 
 	if (!list) {
 		return -1;
@@ -64,7 +64,7 @@ s16 arrayFixedListFindEmpty(ArrayFixedList* list) {
 	return -1;
 }
 
-s16 arrayFixedListFind(ArrayFixedList* list, void* e) {
+s16 arrayFixedListFind(ArrayFixedList* list, const void* e) {
 
 	if (!list) {
 		return -1;

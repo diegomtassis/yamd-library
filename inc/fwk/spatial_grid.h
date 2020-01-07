@@ -29,6 +29,6 @@ struct SpatialGrid {
 void spatialGridInit(SpatialGrid* grid, u8 dim_x, u8 dim_y);
 void spatialGridRelease(SpatialGrid* grid);
 
-void spatialGridIndex(SpatialGrid* grid, Box_s16 object);
+void spatialGridIndex(SpatialGrid* grid, const Box_s16* object);
 
 #endif /* INC_FWK_SPATIAL_GRID_H_ */
