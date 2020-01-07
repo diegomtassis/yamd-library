@@ -74,16 +74,8 @@ void spatialGridIndex(SpatialGrid* grid, Box_s16 object) {
 			for (int y = 0; y < grid->dimension.y; y++) {
 
 				SpatialGridCell cell = grid->cells[x][y];
-				KLog_S4_("Attempting to index box [", object.min.x, "-", object.max.x, ", ", object.min.y, "-",
-						object.max.y, "]");
-				KLog_S4_("in cell [", object.min.x, "-", object.max.x, ", ", object.min.y, "-", object.max.y, "]");
-
 				if (overlap(cell.aabb, object)) {
-
-					doublyLinkedListAdd(&cell.e, &object);
-					KLog("Indexed");
-				} else {
-					KLog("Not indexed");
+					doublyLinkedListAdd(&grid->cells[x][y].e, &object); // somehow using &cell.e passes a wrong address for the list
 				}
 			}
 		}

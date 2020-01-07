@@ -218,7 +218,7 @@ static void moveToNextLine(V2u16* offset) {
 	if (offset->y > max_screen.y) {
 		int v_offset = offset->y - max_screen.y;
 		VDP_setVerticalScroll(VDP_getTextPlan(), tilesToPx(v_offset));
-		VDP_clearTextLine(pxToTiles(VDP_getScreenHeight()) + v_offset); // First line not seen
+		VDP_clearTextLine(pxToTiles(VDP_getScreenHeight() - 1) + v_offset); // First line not seen
 	}
 
 	SPR_setPosition(cursor, offset->x, offset->y);

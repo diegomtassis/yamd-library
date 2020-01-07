@@ -23,16 +23,18 @@ void testSpatialGrid() {
 
 	turnPrinterOn();
 
-	SpatialGrid spatial_grid;
-
 	println("Test SpatialGrid");
 	println("");
 	printerWait(3000);
 
-	spatialGridInit(&spatial_grid, 2, 2);
+	// create the grid
+	SpatialGrid spatial_grid;
+	u8 dim_x = 2;
+	u8 dim_y = 2;
+	spatialGridInit(&spatial_grid, dim_x, dim_y);
 
-	assert(spatial_grid.dimension.x == 2, "wrong size");
-	assert(spatial_grid.dimension.y == 2, "wrong size");
+	assert(spatial_grid.dimension.x == dim_x, "wrong size");
+	assert(spatial_grid.dimension.y == dim_y, "wrong size");
 	assert(spatial_grid.cells != 0, "memory for lists not allocated");
 	println("Initialized spatial grid");
 	printSpatialGridLayout(&spatial_grid);
@@ -41,38 +43,46 @@ void testSpatialGrid() {
 	println("");
 	printerWait(1500);
 
-	u8 num_objects = 2;
+	// create some objects
+	u8 num_objects = 3;
 	Box_s16 objects[num_objects];
-
-	// initialize the objects boxes
-	for (int idx = 0; idx < num_objects; idx++) {
-		objects[idx].h = 24;
-		objects[idx].w = 16;
-	}
-	println("Created AABBs");
-	println("");
-	printerWait(1500);
 
 	// put the objects somewhere in the screen
 	// TODO do it randomly
 	objects[0].min.x = 50;
 	objects[0].min.y = 50;
-	updateBoxMax(&objects[0]);
+	objects[0].h = 24;
+	objects[0].w = 16;
+	updateBoxMax(&objects[0]); // to be in [0][0]
 	objects[1].min.x = 200;
 	objects[1].min.y = 150;
-	updateBoxMax(&objects[1]);
+	objects[1].h = 24;
+	objects[1].w = 16;
+	updateBoxMax(&objects[1]); // to be in [0][0]
+	objects[2].min.x = 150;
+	objects[2].min.y = 105;
+	objects[2].h = 20;
+	objects[2].w = 20;
+	updateBoxMax(&objects[2]); // to be in all the cells
+
+	println("Created AABBs");
+	println("");
+	printerWait(1500);
 
 	// index the objects
 	for (int idx = 0; idx < num_objects; idx++) {
 		spatialGridIndex(&spatial_grid, objects[idx]);
 	}
+	assert(2 == spatial_grid.cells[0][0].e.count, "wrong count for cell [0][0]");
+	assert(1 == spatial_grid.cells[0][1].e.count, "wrong count for cell [0][1]");
+	assert(1 == spatial_grid.cells[1][0].e.count, "wrong count for cell [1][0]");
+	assert(2 == spatial_grid.cells[1][1].e.count, "wrong count for cell [1][1]");
 	println("AABBs successfully indexed");
 	printSpatialGridState(&spatial_grid);
 	println("");
-	printSpatialGridLayout(&spatial_grid);
-	println("");
 	printerWait(1500);
 
+	// release the grid
 	spatialGridRelease(&spatial_grid);
 	assert(spatial_grid.dimension.x == 0, "wrong size");
 	assert(spatial_grid.dimension.y == 0, "wrong size");
@@ -92,7 +102,7 @@ static void printSpatialGridLayout(SpatialGrid* grid) {
 	u8 dim_x = grid->dimension.x;
 	u8 dim_y = grid->dimension.y;
 
-	println("SpatialGrid layout: ");
+	println("SpatialGrid layout:");
 
 	print("dim x=");
 	sprintf(value, "%01u", dim_x);
@@ -142,8 +152,9 @@ static void printSpatialGridState(SpatialGrid* grid) {
 	u8 dim_x = grid->dimension.x;
 	u8 dim_y = grid->dimension.y;
 
-	println("SpatialGrid state: ");
+	print("SpatialGrid state:");
 	if (grid->cells) {
+		println("");
 		for (int x = 0; x < dim_x; x++) {
 			for (int y = 0; y < dim_y; y++) {
 				print("Cell [");
@@ -158,6 +169,6 @@ static void printSpatialGridState(SpatialGrid* grid) {
 			}
 		}
 	} else {
-		println(", no cells");
+		println(" no cells");
 	}
 }
