@@ -78,10 +78,14 @@ void spatialGridIndex(SpatialGrid* grid, const Box_s16* object) {
 
 		bool indexed_cells[rows][columns];
 		bool already_indexed = FALSE;
+		u8 overlaps_count = 0;
 
-		for (int row = 0; row < rows; row++) {
-			for (int column = 0; column < columns; column++) {
-
+		u8 row = 0;
+		bool keep_exploring_rows = TRUE;
+		do {
+			u8 column = 0;
+			bool keep_exploring_columns_per_row = TRUE;
+			do {
 				SpatialGridCell cell = grid->cells[row][column];
 
 				// some scenarios allow shortcuts
@@ -91,24 +95,51 @@ void spatialGridIndex(SpatialGrid* grid, const Box_s16* object) {
 							+ indexedInPosition(rows, columns, row, column - 1, indexed_cells)
 							+ indexedInPosition(rows, columns, row - 1, column, indexed_cells);
 					if (combined_adjacents == 3) {
-						doublyLinkedListAdd(&grid->cells[column][row].e, object); // somehow using &cell.e passes a wrong address for the list
-						already_indexed = TRUE;
-						indexed_cells[column][row] = TRUE;
-						continue;
 
-					} else if (combined_adjacents == 2
-							|| indexedInPosition(rows, columns, row - 1, column - 1, indexed_cells)) {
-						return;
+						// easiest scenario, the box is present in 3 surrounding cell, hence also in this one
+						doublyLinkedListAdd(&grid->cells[row][column].e, object); // somehow using &cell.e passes a wrong address for the list
+						already_indexed = TRUE;
+						indexed_cells[row][column] = TRUE;
+
+					} else if (combined_adjacents == 2) {
+						// if it's present only in two surrounding cells then it can't be in this one
+						keep_exploring_columns_per_row = FALSE;
+						break;
+
+					} else if (combined_adjacents == 1) {
+						if (indexedInPosition(rows, columns, row - 1, column - 1, indexed_cells)) {
+							keep_exploring_columns_per_row = FALSE;
+							keep_exploring_rows = FALSE;
+							break;
+
+						} else {
+							overlaps_count++;
+							if (overlap(&cell.aabb, object)) {
+								doublyLinkedListAdd(&grid->cells[row][column].e, object); // somehow using &cell.e passes a wrong address for the list
+								already_indexed = TRUE;
+								indexed_cells[row][column] = TRUE;
+							}
+						}
+					} else { // combined_adjacents == 0
+						// not in this cell, but maybe in one in this row
+						break;
+					}
+				} else {
+					overlaps_count++;
+					if (overlap(&cell.aabb, object)) {
+						doublyLinkedListAdd(&grid->cells[row][column].e, object); // somehow using &cell.e passes a wrong address for the list
+						already_indexed = TRUE;
+						indexed_cells[row][column] = TRUE;
 					}
 				}
 
-				if (overlap(&cell.aabb, object)) {
-					doublyLinkedListAdd(&grid->cells[row][column].e, object); // somehow using &cell.e passes a wrong address for the list
-					already_indexed = TRUE;
-					indexed_cells[row][column] = TRUE;
-				}
-			}
-		}
+				column++;
+			} while (column < columns && keep_exploring_columns_per_row);
+
+			row++;
+		} while (row < rows && keep_exploring_rows);
+
+		KLog_U1("overlap invocations: ", overlaps_count);
 	}
 }
 

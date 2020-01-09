@@ -16,7 +16,7 @@ static void printSpatialGridLayout(SpatialGrid* grid);
 static void printSpatialGridState(SpatialGrid* grid);
 static void printBoxBounds(const Box_s16* box);
 
-static void testForBox(const Box_s16* object, u8 columns, u8 rows, bool expected[columns][rows]);
+static void testForBox(const Box_s16* object, u8 columns, u8 rows, bool expected[columns][rows], const char* scenario);
 
 void testSpatialGrid() {
 
@@ -29,24 +29,43 @@ void testSpatialGrid() {
 
 	Box_s16 box;
 
-	defineBox(&box, 50, 50, 24, 16);
+	// box in first cell only
+	defineBox(&box, 1, 1, 10, 10);
 	updateBoxMax(&box);
+	bool test1[2][3] = { { 1, 0, 0 }, { 0, 0, 0 } };
+	testForBox(&box, rows, columns, test1, "box in first cell only");
 
-	bool test0[2][3] = { { 1, 0, 0 }, { 0, 0, 0 } };
-	testForBox(&box, rows, columns, test0);
-
-	defineBox(&box, 1, 50, 310, 10);
+	// box spans the whole first row
+	defineBox(&box, 1, 1, 310, 10);
 	updateBoxMax(&box);
+	bool test2[2][3] = { { 1, 1, 1 }, { 0, 0, 0 } };
+	testForBox(&box, rows, columns, test2, "box spans the whole first row");
 
-	bool test1[2][3] = { { 1, 1, 1 }, { 0, 0, 0 } };
-	testForBox(&box, rows, columns, test1);
+	// box spans the whole first column
+	defineBox(&box, 1, 1, 10, 210);
+	updateBoxMax(&box);
+	bool test3[2][3] = { { 1, 0, 0 }, { 1, 0, 0 } };
+	testForBox(&box, rows, columns, test3, "box spans the whole first column");
+
+	// box spans all the cells
+	defineBox(&box, 1, 1, 315, 220);
+	updateBoxMax(&box);
+	bool test4[2][3] = { { 1, 1, 1 }, { 1, 1, 1 } };
+	testForBox(&box, rows, columns, test4, "box spans all the cells");
+
+	// box in the last cell
+	defineBox(&box, 310, 210, 5, 5);
+	updateBoxMax(&box);
+	bool test5[2][3] = { { 0, 0, 0 }, { 0, 0, 1 } };
+	testForBox(&box, rows, columns, test5, "box in the last cell");
 }
 
-static void testForBox(const Box_s16* object, u8 rows, u8 columns, bool expected[rows][columns]) {
+static void testForBox(const Box_s16* object, u8 rows, u8 columns, bool expected[rows][columns], const char* scenario) {
 
 	turnPrinterOn();
 
 	println("Test SpatialGrid for Box:");
+	println(scenario);
 	printBoxBounds(object);
 	println("");
 	printerWait(3000);
@@ -66,8 +85,8 @@ static void testForBox(const Box_s16* object, u8 rows, u8 columns, bool expected
 	// index the object
 	spatialGridIndex(&spatial_grid, object);
 
-	for (int row = 0; row < 3; row++) {
-		for (int column = 0; column < 3; column++) {
+	for (int row = 0; row < rows; row++) {
+		for (int column = 0; column < columns; column++) {
 			assert(expected[row][column] == spatial_grid.cells[row][column].e.count, "wrong count for cell");
 		}
 	}
