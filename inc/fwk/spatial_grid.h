@@ -22,7 +22,7 @@ struct SpatialGridCell {
 };
 
 struct SpatialGrid {
-	V2s16 dimension;
+	u8 rows, columns;
 	SpatialGridCell** cells;
 };
 

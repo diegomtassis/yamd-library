@@ -16,8 +16,8 @@ static bool indexedInPosition(u8 columns, u8 rows, u8 column, u8 row, bool index
 
 void spatialGridInit(SpatialGrid* grid, u8 rows, u8 columns) {
 
-	grid->dimension.y = rows;
-	grid->dimension.x = columns;
+	grid->rows = rows;
+	grid->columns = columns;
 
 	u16 cell_width = VDP_getScreenWidth() / columns;
 	u16 cell_height = VDP_getScreenHeight() / rows;
@@ -50,8 +50,8 @@ void spatialGridRelease(SpatialGrid* grid) {
 	}
 
 	if (grid->cells) {
-		for (int row = 0; row < grid->dimension.y; row++) {
-			for (int column = 0; column < grid->dimension.x; column++) {
+		for (int row = 0; row < grid->rows; row++) {
+			for (int column = 0; column < grid->columns; column++) {
 				doublyLinkedListRelease(&grid->cells[row][column].e);
 			}
 			MEM_free(grid->cells[row]);
@@ -61,8 +61,8 @@ void spatialGridRelease(SpatialGrid* grid) {
 		grid->cells = 0;
 	}
 
-	grid->dimension.x = 0;
-	grid->dimension.y = 0;
+	grid->rows = 0;
+	grid->columns = 0;
 }
 
 void spatialGridIndex(SpatialGrid* grid, const Box_s16* object) {
@@ -73,8 +73,8 @@ void spatialGridIndex(SpatialGrid* grid, const Box_s16* object) {
 
 	if (grid->cells) {
 
-		u8 rows = grid->dimension.y;
-		u8 columns = grid->dimension.x;
+		u8 rows = grid->rows;
+		u8 columns = grid->columns;
 
 		bool indexed_cells[rows][columns];
 		bool already_indexed = FALSE;

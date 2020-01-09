@@ -74,8 +74,8 @@ static void testForBox(const Box_s16* object, u8 rows, u8 columns, bool expected
 	SpatialGrid spatial_grid;
 	spatialGridInit(&spatial_grid, rows, columns);
 
-	assert(spatial_grid.dimension.y == rows, "wrong size");
-	assert(spatial_grid.dimension.x == columns, "wrong size");
+	assert(spatial_grid.rows == rows, "wrong size");
+	assert(spatial_grid.columns == columns, "wrong size");
 	assert(spatial_grid.cells != 0, "memory for lists not allocated");
 	println("Initialized spatial grid");
 	printSpatialGridLayout(&spatial_grid);
@@ -98,8 +98,8 @@ static void testForBox(const Box_s16* object, u8 rows, u8 columns, bool expected
 
 	// release the grid
 	spatialGridRelease(&spatial_grid);
-	assert(spatial_grid.dimension.y == 0, "wrong size");
-	assert(spatial_grid.dimension.x == 0, "wrong size");
+	assert(spatial_grid.rows == 0, "wrong size");
+	assert(spatial_grid.columns == 0, "wrong size");
 	assert(!spatial_grid.cells, "memory for lists not released");
 	println("Released spatial grid");
 
@@ -111,8 +111,8 @@ static void printSpatialGridLayout(SpatialGrid* grid) {
 
 	char value[5];
 
-	u8 rows = grid->dimension.y;
-	u8 columns = grid->dimension.x;
+	u8 rows = grid->rows;
+	u8 columns = grid->columns;
 
 	println("SpatialGrid layout:");
 
@@ -150,14 +150,11 @@ static void printSpatialGridState(SpatialGrid* grid) {
 
 	char value[5];
 
-	u8 rows = grid->dimension.y;
-	u8 columns = grid->dimension.x;
-
 	print("SpatialGrid state:");
 	if (grid->cells) {
 		println("");
-		for (int row = 0; row < rows; row++) {
-			for (int column = 0; column < columns; column++) {
+		for (int row = 0; row < grid->rows; row++) {
+			for (int column = 0; column < grid->columns; column++) {
 				print("Cell [");
 				sprintf(value, "%01u", row);
 				print(value);
