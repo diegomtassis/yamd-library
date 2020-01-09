@@ -26,7 +26,7 @@ struct SpatialGrid {
 	SpatialGridCell** cells;
 };
 
-void spatialGridInit(SpatialGrid* grid, u8 dim_x, u8 dim_y);
+void spatialGridInit(SpatialGrid* grid, u8 rows, u8 columns);
 void spatialGridRelease(SpatialGrid* grid);
 
 void spatialGridIndex(SpatialGrid* grid, const Box_s16* object);

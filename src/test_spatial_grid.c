@@ -14,6 +14,9 @@
 
 static void printSpatialGridLayout(SpatialGrid* grid);
 static void printSpatialGridState(SpatialGrid* grid);
+static void printBoxBounds(const Box_s16* box);
+
+static void testForBox(const Box_s16* object, u8 columns, u8 rows, bool expected[columns][rows]);
 
 void testSpatialGrid() {
 
@@ -21,62 +24,54 @@ void testSpatialGrid() {
 
 	VDP_setTextPalette(PAL2);
 
+	u8 rows = 2;
+	u8 columns = 3;
+
+	Box_s16 box;
+
+	defineBox(&box, 50, 50, 24, 16);
+	updateBoxMax(&box);
+
+	bool test0[2][3] = { { 1, 0, 0 }, { 0, 0, 0 } };
+	testForBox(&box, rows, columns, test0);
+
+	defineBox(&box, 1, 50, 310, 10);
+	updateBoxMax(&box);
+
+	bool test1[2][3] = { { 1, 1, 1 }, { 0, 0, 0 } };
+	testForBox(&box, rows, columns, test1);
+}
+
+static void testForBox(const Box_s16* object, u8 rows, u8 columns, bool expected[rows][columns]) {
+
 	turnPrinterOn();
 
-	println("Test SpatialGrid");
+	println("Test SpatialGrid for Box:");
+	printBoxBounds(object);
 	println("");
 	printerWait(3000);
 
 	// create the grid
 	SpatialGrid spatial_grid;
-	u8 dim_x = 2;
-	u8 dim_y = 2;
-	spatialGridInit(&spatial_grid, dim_x, dim_y);
+	spatialGridInit(&spatial_grid, rows, columns);
 
-	assert(spatial_grid.dimension.x == dim_x, "wrong size");
-	assert(spatial_grid.dimension.y == dim_y, "wrong size");
+	assert(spatial_grid.dimension.y == rows, "wrong size");
+	assert(spatial_grid.dimension.x == columns, "wrong size");
 	assert(spatial_grid.cells != 0, "memory for lists not allocated");
 	println("Initialized spatial grid");
 	printSpatialGridLayout(&spatial_grid);
 	println("");
-	printSpatialGridState(&spatial_grid);
-	println("");
 	printerWait(1500);
 
-	// create some objects
-	u8 num_objects = 3;
-	Box_s16 objects[num_objects];
+	// index the object
+	spatialGridIndex(&spatial_grid, object);
 
-	// put the objects somewhere in the screen
-	// TODO do it randomly
-	objects[0].min.x = 50;
-	objects[0].min.y = 50;
-	objects[0].h = 24;
-	objects[0].w = 16;
-	updateBoxMax(&objects[0]); // to be in [0][0]
-	objects[1].min.x = 200;
-	objects[1].min.y = 150;
-	objects[1].h = 24;
-	objects[1].w = 16;
-	updateBoxMax(&objects[1]); // to be in [0][0]
-	objects[2].min.x = 150;
-	objects[2].min.y = 105;
-	objects[2].h = 20;
-	objects[2].w = 20;
-	updateBoxMax(&objects[2]); // to be in all the cells
-
-	println("Created AABBs");
-	println("");
-	printerWait(1500);
-
-	// index the objects
-	for (int idx = 0; idx < num_objects; idx++) {
-		spatialGridIndex(&spatial_grid, &objects[idx]);
+	for (int row = 0; row < 3; row++) {
+		for (int column = 0; column < 3; column++) {
+			assert(expected[row][column] == spatial_grid.cells[row][column].e.count, "wrong count for cell");
+		}
 	}
-	assert(2 == spatial_grid.cells[0][0].e.count, "wrong count for cell [0][0]");
-	assert(1 == spatial_grid.cells[0][1].e.count, "wrong count for cell [0][1]");
-	assert(1 == spatial_grid.cells[1][0].e.count, "wrong count for cell [1][0]");
-	assert(2 == spatial_grid.cells[1][1].e.count, "wrong count for cell [1][1]");
+
 	println("AABBs successfully indexed");
 	printSpatialGridState(&spatial_grid);
 	println("");
@@ -84,12 +79,10 @@ void testSpatialGrid() {
 
 	// release the grid
 	spatialGridRelease(&spatial_grid);
-	assert(spatial_grid.dimension.x == 0, "wrong size");
 	assert(spatial_grid.dimension.y == 0, "wrong size");
+	assert(spatial_grid.dimension.x == 0, "wrong size");
 	assert(!spatial_grid.cells, "memory for lists not released");
 	println("Released spatial grid");
-	printSpatialGridState(&spatial_grid);
-	println("");
 
 	printerWait(5000);
 	turnPrinterOff();
@@ -99,45 +92,34 @@ static void printSpatialGridLayout(SpatialGrid* grid) {
 
 	char value[5];
 
-	u8 dim_x = grid->dimension.x;
-	u8 dim_y = grid->dimension.y;
+	u8 rows = grid->dimension.y;
+	u8 columns = grid->dimension.x;
 
 	println("SpatialGrid layout:");
 
-	print("dim x=");
-	sprintf(value, "%01u", dim_x);
+	print("rows=");
+	sprintf(value, "%01u", rows);
 	print(value);
-	print(", dim y=");
-	sprintf(value, "%01u", dim_y);
+	print(", columns=");
+	sprintf(value, "%01u", columns);
 	println(value);
 
 	if (grid->cells) {
 
 		Box_s16* box;
-		for (int x = 0; x < dim_x; x++) {
-			for (int y = 0; y < dim_y; y++) {
+		for (int row = 0; row < rows; row++) {
+			for (int column = 0; column < columns; column++) {
 
-				box = &grid->cells[x][y].aabb;
+				box = &grid->cells[row][column].aabb;
 
 				print("Cell [");
-				sprintf(value, "%01u", x);
+				sprintf(value, "%01u", row);
 				print(value);
 				print(",");
-				sprintf(value, "%01u", y);
+				sprintf(value, "%01u", column);
 				print(value);
-				print("]: [");
-				sprintf(value, "%03d", box->min.x);
-				print(value);
-				print("-");
-				sprintf(value, "%03d", box->max.x);
-				print(value);
-				print(", ");
-				sprintf(value, "%03d", box->min.y);
-				print(value);
-				print("-");
-				sprintf(value, "%03d", box->max.y);
-				print(value);
-				println("]");
+				print("]: ");
+				printBoxBounds(box);
 			}
 		}
 	} else {
@@ -149,26 +131,45 @@ static void printSpatialGridState(SpatialGrid* grid) {
 
 	char value[5];
 
-	u8 dim_x = grid->dimension.x;
-	u8 dim_y = grid->dimension.y;
+	u8 rows = grid->dimension.y;
+	u8 columns = grid->dimension.x;
 
 	print("SpatialGrid state:");
 	if (grid->cells) {
 		println("");
-		for (int x = 0; x < dim_x; x++) {
-			for (int y = 0; y < dim_y; y++) {
+		for (int row = 0; row < rows; row++) {
+			for (int column = 0; column < columns; column++) {
 				print("Cell [");
-				sprintf(value, "%01u", x);
+				sprintf(value, "%01u", row);
 				print(value);
 				print(",");
-				sprintf(value, "%01u", y);
+				sprintf(value, "%01u", column);
 				print(value);
 				print("]: count = ");
-				sprintf(value, "%02u", grid->cells[x][y].e.count);
+				sprintf(value, "%02u", grid->cells[row][column].e.count);
 				println(value);
 			}
 		}
 	} else {
 		println(" no cells");
 	}
+}
+
+static void printBoxBounds(const Box_s16* box) {
+
+	char value[5];
+
+	print("[");
+	sprintf(value, "%03d", box->min.x);
+	print(value);
+	print("-");
+	sprintf(value, "%03d", box->max.x);
+	print(value);
+	print(", ");
+	sprintf(value, "%03d", box->min.y);
+	print(value);
+	print("-");
+	sprintf(value, "%03d", box->max.y);
+	print(value);
+	println("]");
 }

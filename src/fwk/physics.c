@@ -44,6 +44,14 @@ Box_s16 targetVBox(const Object_f16* object) {
 	return box;
 }
 
+void defineBox(Box_s16* box, s16 min_x, s16 min_y, u16 w, u16 h) {
+
+	box->min.x = min_x;
+	box->min.y = min_y;
+	box->w = w;
+	box->h = h;
+}
+
 void updateBoxMax(Box_s16* box) {
 
 	box->max.x = box->min.x + box->w - 1;

@@ -12,33 +12,33 @@
 #include "../../inc/fwk/commons.h"
 #include "../../inc/fwk/doubly_linked_list.h"
 
-static bool indexedInPosition(u8 dim_x, u8 dim_y, u8 x, u8 y, bool cell_indexed[dim_x][dim_y]);
+static bool indexedInPosition(u8 columns, u8 rows, u8 column, u8 row, bool indexed_cells[columns][rows]);
 
-void spatialGridInit(SpatialGrid* grid, u8 dim_x, u8 dim_y) {
+void spatialGridInit(SpatialGrid* grid, u8 rows, u8 columns) {
 
-	grid->dimension.x = dim_x;
-	grid->dimension.y = dim_y;
+	grid->dimension.y = rows;
+	grid->dimension.x = columns;
 
-	u16 cell_width = VDP_getScreenWidth() / dim_x;
-	u16 cell_height = VDP_getScreenHeight() / dim_y;
+	u16 cell_width = VDP_getScreenWidth() / columns;
+	u16 cell_height = VDP_getScreenHeight() / rows;
 
-	grid->cells = MEM_calloc((sizeof(SpatialGridCell*)) * dim_x);
+	grid->cells = MEM_calloc((sizeof(SpatialGridCell*)) * rows);
 
 	Box_s16* box;
-	for (int x = 0; x < dim_x; x++) {
+	for (int row = 0; row < rows; row++) {
 
-		grid->cells[x] = MEM_calloc((sizeof(SpatialGridCell)) * dim_y);
+		grid->cells[row] = MEM_calloc((sizeof(SpatialGridCell)) * columns);
 
-		for (int y = 0; y < dim_y; y++) {
+		for (int column = 0; column < columns; column++) {
 
-			box = &grid->cells[x][y].aabb;
+			box = &grid->cells[row][column].aabb;
 
-			setV2s16(&box->min, cell_width * x, cell_height * y);
+			setV2s16(&box->min, cell_width * column, cell_height * row);
 			box->w = cell_width;
 			box->h = cell_height;
 			updateBoxMax(box);
 
-			doublyLinkedListInit(&grid->cells[x][y].e);
+			doublyLinkedListInit(&grid->cells[row][column].e);
 		}
 	}
 }
@@ -50,11 +50,11 @@ void spatialGridRelease(SpatialGrid* grid) {
 	}
 
 	if (grid->cells) {
-		for (int x = 0; x < grid->dimension.x; x++) {
-			for (int y = 0; y < grid->dimension.y; y++) {
-				doublyLinkedListRelease(&grid->cells[x][y].e);
+		for (int row = 0; row < grid->dimension.y; row++) {
+			for (int column = 0; column < grid->dimension.x; column++) {
+				doublyLinkedListRelease(&grid->cells[row][column].e);
 			}
-			MEM_free(grid->cells[x]);
+			MEM_free(grid->cells[row]);
 		}
 
 		MEM_free(grid->cells);
@@ -71,50 +71,52 @@ void spatialGridIndex(SpatialGrid* grid, const Box_s16* object) {
 		return;
 	}
 
-	u8 dim_x = grid->dimension.x;
-	u8 dim_y = grid->dimension.y;
-
-	bool cell_indexed[dim_x][dim_y];
-	bool already_indexed = FALSE;
-
 	if (grid->cells) {
-		for (int x = 0; x < dim_x; x++) {
-			for (int y = 0; y < dim_y; y++) {
 
-				SpatialGridCell cell = grid->cells[x][y];
+		u8 rows = grid->dimension.y;
+		u8 columns = grid->dimension.x;
 
-				// in some scenarios there makes no sense to keep exploring
+		bool indexed_cells[rows][columns];
+		bool already_indexed = FALSE;
+
+		for (int row = 0; row < rows; row++) {
+			for (int column = 0; column < columns; column++) {
+
+				SpatialGridCell cell = grid->cells[row][column];
+
+				// some scenarios allow shortcuts
 				if (already_indexed) {
 
-					u8 combined_adjacents = indexedInPosition(dim_x, dim_y, x - 1, y - 1, cell_indexed)
-							+ indexedInPosition(dim_x, dim_y, x, y - 1, cell_indexed)
-							+ indexedInPosition(dim_x, dim_y, x - 1, y, cell_indexed);
+					u8 combined_adjacents = indexedInPosition(rows, columns, row - 1, column - 1, indexed_cells)
+							+ indexedInPosition(rows, columns, row, column - 1, indexed_cells)
+							+ indexedInPosition(rows, columns, row - 1, column, indexed_cells);
 					if (combined_adjacents == 3) {
-						doublyLinkedListAdd(&grid->cells[x][y].e, object); // somehow using &cell.e passes a wrong address for the list
+						doublyLinkedListAdd(&grid->cells[column][row].e, object); // somehow using &cell.e passes a wrong address for the list
 						already_indexed = TRUE;
-						cell_indexed[x][y] = TRUE;
+						indexed_cells[column][row] = TRUE;
 						continue;
 
-					} else if (combined_adjacents == 2 || indexedInPosition(dim_x, dim_y, x - 1, y - 1, cell_indexed)) {
+					} else if (combined_adjacents == 2
+							|| indexedInPosition(rows, columns, row - 1, column - 1, indexed_cells)) {
 						return;
 					}
 				}
 
 				if (overlap(&cell.aabb, object)) {
-					doublyLinkedListAdd(&grid->cells[x][y].e, object); // somehow using &cell.e passes a wrong address for the list
+					doublyLinkedListAdd(&grid->cells[row][column].e, object); // somehow using &cell.e passes a wrong address for the list
 					already_indexed = TRUE;
-					cell_indexed[x][y] = TRUE;
+					indexed_cells[row][column] = TRUE;
 				}
 			}
 		}
 	}
 }
 
-static bool indexedInPosition(u8 dim_x, u8 dim_y, u8 x, u8 y, bool cell_indexed[dim_x][dim_y]) {
+static bool indexedInPosition(u8 rows, u8 columns, u8 row, u8 column, bool indexed_cells[rows][columns]) {
 
-	if (x < 0 || y < 0 || x >= dim_x || y >= dim_y) {
+	if (column < 0 || row < 0 || column >= columns || row >= rows) {
 		return FALSE;
 	}
 
-	return cell_indexed[x][y];
+	return indexed_cells[row][column];
 }
