@@ -66,6 +66,8 @@ bool contained(V2s16 subject_pos, const Box_s16* object_box) {
 
 bool overlap(const Box_s16* subject_box, const Box_s16* object_box) {
 
+//	waitSubTick(1);
+
 	return (OVERLAPPED & axisXBoxRelativePos(subject_box, object_box))
 			&& (OVERLAPPED & axisYBoxRelativePos(subject_box, object_box));
 }

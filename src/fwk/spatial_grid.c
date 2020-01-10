@@ -139,7 +139,7 @@ void spatialGridIndex(SpatialGrid* grid, const Box_s16* object) {
 			row++;
 		} while (row < rows && keep_exploring_rows);
 
-		KLog_U1("overlap invocations: ", overlaps_count);
+//		KLog_U1("overlap invocations: ", overlaps_count);
 	}
 }
 
