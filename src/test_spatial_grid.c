@@ -17,12 +17,15 @@ static void printSpatialGridState(SpatialGrid* grid);
 static void printBoxBounds(const Box_s16* box);
 
 static void testForBox(const Box_s16* object, u8 columns, u8 rows, bool expected[columns][rows], const char* scenario);
+static void testPerformance();
 
 void testSpatialGrid() {
 
 	KLog("testing spatial grid");
 
 	VDP_setTextPalette(PAL2);
+
+	/*
 
 	u8 rows = 2;
 	u8 columns = 3;
@@ -58,6 +61,11 @@ void testSpatialGrid() {
 	updateBoxMax(&box);
 	bool test5[2][3] = { { 0, 0, 0 }, { 0, 0, 1 } };
 	testForBox(&box, rows, columns, test5, "box in the last cell");
+
+*/
+
+	// test performance
+	testPerformance();
 }
 
 static void testForBox(const Box_s16* object, u8 rows, u8 columns, bool expected[rows][columns], const char* scenario) {
@@ -102,6 +110,52 @@ static void testForBox(const Box_s16* object, u8 rows, u8 columns, bool expected
 	assert(spatial_grid.columns == 0, "wrong size");
 	assert(!spatial_grid.cells, "memory for lists not released");
 	println("Released spatial grid");
+
+	printerWait(5000);
+	turnPrinterOff();
+}
+
+static void testPerformance() {
+
+	u8 iterations = 10;
+	u8 num_objects = 10;
+
+	turnPrinterOn();
+
+	println("Performance test");
+	println("brute force vs spatial grid");
+	println("");
+
+	char value[10];
+	print("Random boxes: ");
+	sprintf(value, "%02u", num_objects);
+	println(value);
+	print("Iterations: ");
+	sprintf(value, "%02u", iterations);
+	println(value);
+	println("");
+
+	int brute_force_time = 0;
+	int spatial_grid_time = 0;
+
+	for (u8 i = 0; i < iterations; i++) {
+
+		// prepare boxes
+
+		// brute force
+
+		// spatial grid
+
+		// release boxes
+	}
+
+	println("Time spent");
+	print("Brute force: ");
+	sprintf(value, "%010u", brute_force_time);
+	println(value);
+	print("Spatial grid: ");
+	sprintf(value, "%010u", spatial_grid_time);
+	println(value);
 
 	printerWait(5000);
 	turnPrinterOff();
