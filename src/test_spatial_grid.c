@@ -118,8 +118,8 @@ static void testForBox(const Box_s16* object, u8 rows, u8 columns, bool expected
 
 static void testPerformance() {
 
-	u8 iterations = 25;
-	u16 num_boxes = 100;
+	u8 iterations = 100;
+	u16 num_boxes = 50;
 
 	turnPrinterOn();
 
@@ -137,7 +137,8 @@ static void testPerformance() {
 	println("");
 
 	u32 brute_force_time = 0;
-	u32 spatial_grid_time = 0;
+	u32 spatial_grid_index_time = 0;
+	u32 spatial_grid_collisions_time = 0;
 
 	Box_s16 boxes[num_boxes];
 	Box_s16* box;
@@ -169,8 +170,8 @@ static void testPerformance() {
 		// spatial grid
 		startTimer(1);
 
-		u8 rows = 3;
-		u8 columns = 3;
+		u8 rows = 2;
+		u8 columns = 2;
 		SpatialGrid spatial_grid;
 		spatialGridInit(&spatial_grid, rows, columns);
 
@@ -178,6 +179,8 @@ static void testPerformance() {
 		for (u16 idx = 0; idx < num_boxes; idx++) {
 			spatialGridIndex(&spatial_grid, &boxes[idx]);
 		}
+
+		spatial_grid_index_time += getTimer(1, TRUE);
 
 		// collisions
 		for (int row = 0; row < rows; row++) {
@@ -194,7 +197,7 @@ static void testPerformance() {
 			}
 		}
 
-		spatial_grid_time += getTimer(1, FALSE);
+		spatial_grid_collisions_time += getTimer(1, FALSE);
 
 		// release the grid
 		spatialGridRelease(&spatial_grid);
@@ -206,12 +209,15 @@ static void testPerformance() {
 	print("Brute force: ");
 	sprintf(value, "%010lu", brute_force_time);
 	println(value);
-	print("Spatial grid: ");
-	sprintf(value, "%010lu", spatial_grid_time);
+	print("Spatial grid indexing: ");
+	sprintf(value, "%010lu", spatial_grid_index_time);
+	println(value);
+	print("Spatial grid collisions: ");
+	sprintf(value, "%010lu", spatial_grid_collisions_time);
 	println(value);
 
-	print("Ratio: ");
-	sprintf(value, "%010lu", brute_force_time / spatial_grid_time);
+	print("Ratio grid/brute: ");
+	sprintf(value, "%010lu", (spatial_grid_index_time + spatial_grid_collisions_time) / brute_force_time);
 	println(value);
 
 	printerWait(5000);
