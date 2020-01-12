@@ -7,8 +7,10 @@
 
 #include <genesis.h>
 
+#include "../inc/fwk/array_fixed_list.h"
 #include "../inc/fwk/assert.h"
 #include "../inc/fwk/commons.h"
+#include "../inc/fwk/doubly_linked_list.h"
 #include "../inc/fwk/physics.h"
 #include "../inc/fwk/printer.h"
 #include "../inc/fwk/spatial_grid.h"
@@ -81,7 +83,7 @@ static void testForBox(const Box_s16* object, u8 rows, u8 columns, bool expected
 
 	// create the grid
 	SpatialGrid spatial_grid;
-	spatialGridInit(&spatial_grid, rows, columns);
+	spatialGridInit(&spatial_grid, rows, columns, 1);
 
 	assert(spatial_grid.rows == rows, "wrong size");
 	assert(spatial_grid.columns == columns, "wrong size");
@@ -118,8 +120,11 @@ static void testForBox(const Box_s16* object, u8 rows, u8 columns, bool expected
 
 static void testPerformance() {
 
-	u8 iterations = 100;
-	u16 num_boxes = 50;
+	u8 iterations = 10;
+	u8 num_boxes = 50;
+
+	u8 rows = 3;
+	u8 columns = 3;
 
 	turnPrinterOn();
 
@@ -140,6 +145,9 @@ static void testPerformance() {
 	u32 spatial_grid_index_time = 0;
 	u32 spatial_grid_collisions_time = 0;
 
+	u32 brute_force_overlaps = 0;
+	u32 grid_overlaps = 0;
+
 	Box_s16 boxes[num_boxes];
 	Box_s16* box;
 
@@ -148,7 +156,7 @@ static void testPerformance() {
 	for (u8 i = 0; i < iterations; i++) {
 
 		// prepare boxes
-		for (u16 idx = 0; idx < num_boxes; idx++) {
+		for (u8 idx = 0; idx < num_boxes; idx++) {
 			box = &boxes[idx];
 			box->min.x = randomInRangeU16(0, screen_max.x);
 			box->min.y = randomInRangeU16(0, screen_max.y);
@@ -159,9 +167,10 @@ static void testPerformance() {
 
 		// brute force
 		startTimer(1);
-		for (u16 left_box = 0; left_box < num_boxes; left_box++) {
-			for (u16 right_box = left_box + 1; right_box < num_boxes; right_box++) {
+		for (u8 left_box = 0; left_box < num_boxes; left_box++) {
+			for (u8 right_box = left_box + 1; right_box < num_boxes; right_box++) {
 				overlap(&boxes[left_box], &boxes[right_box]);
+				brute_force_overlaps++;
 			}
 		}
 
@@ -170,51 +179,65 @@ static void testPerformance() {
 		// spatial grid
 		startTimer(1);
 
-		u8 rows = 2;
-		u8 columns = 2;
 		SpatialGrid spatial_grid;
-		spatialGridInit(&spatial_grid, rows, columns);
+		spatialGridInit(&spatial_grid, rows, columns, num_boxes);
 
 		// index the boxes
 		for (u16 idx = 0; idx < num_boxes; idx++) {
 			spatialGridIndex(&spatial_grid, &boxes[idx]);
 		}
 
-		spatial_grid_index_time += getTimer(1, TRUE);
+//		spatial_grid_index_time += getTimer(1, TRUE);
 
-		// collisions
-		for (int row = 0; row < rows; row++) {
-			for (int column = 0; column < columns; column++) {
-				DoublyLinkedListNode* outer_node = spatial_grid.cells[row][column].e.first;
-				while (outer_node) {
-					DoublyLinkedListNode* inner_node = outer_node->next;
-					while (inner_node) {
-						overlap(&outer_node->e, &inner_node->e);
-						inner_node = inner_node->next;
+// collisions
+		ArrayFixedList* list = &spatial_grid.cells[0][0].e;
+
+		u8 size = list->size;
+		const void** elements = list->e;
+
+		assert(num_boxes == size, "wrong list size");
+
+		startTimer(3);
+
+		for (u8 row = 0; row < rows; row++) {
+			for (u8 column = 0; column < columns; column++) {
+				for (u8 left_box = 0; left_box < num_boxes; left_box++) {
+					if (elements[left_box]) {
+						for (u8 right_box = left_box + 1; right_box < num_boxes; right_box++) {
+							if (elements[right_box]) {
+								overlap(&elements[left_box], &elements[right_box]);
+								grid_overlaps++;
+							}
+						}
 					}
-					outer_node = outer_node->next;
 				}
 			}
 		}
 
-		spatial_grid_collisions_time += getTimer(1, FALSE);
+		spatial_grid_collisions_time += getTimer(3, FALSE);
 
 		// release the grid
 		spatialGridRelease(&spatial_grid);
-
-		// release boxes
 	}
 
 	println("Time spent");
-	print("Brute force: ");
+	println("Brute force time: ");
 	sprintf(value, "%010lu", brute_force_time);
 	println(value);
-	print("Spatial grid indexing: ");
+	println("Brute force overlaps: ");
+	sprintf(value, "%010lu", brute_force_overlaps);
+	println(value);
+	println("");
+	println("Spatial grid indexing time: ");
 	sprintf(value, "%010lu", spatial_grid_index_time);
 	println(value);
-	print("Spatial grid collisions: ");
+	println("Spatial grid collisions time: ");
 	sprintf(value, "%010lu", spatial_grid_collisions_time);
 	println(value);
+	println("Grid collisions overlaps: ");
+	sprintf(value, "%010lu", grid_overlaps);
+	println(value);
+	println("");
 
 	print("Ratio grid/brute: ");
 	sprintf(value, "%010lu", (spatial_grid_index_time + spatial_grid_collisions_time) / brute_force_time);

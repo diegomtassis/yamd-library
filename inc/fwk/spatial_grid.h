@@ -10,7 +10,7 @@
 
 #include <genesis.h>
 
-#include "doubly_linked_list.h"
+#include "array_fixed_list.h"
 #include "physics.h"
 
 typedef struct SpatialGrid SpatialGrid;
@@ -18,7 +18,7 @@ typedef struct SpatialGridCell SpatialGridCell;
 
 struct SpatialGridCell {
 	Box_s16 aabb;
-	DoublyLinkedList e;
+	ArrayFixedList e;
 };
 
 struct SpatialGrid {
@@ -26,7 +26,7 @@ struct SpatialGrid {
 	SpatialGridCell** cells;
 };
 
-void spatialGridInit(SpatialGrid* grid, u8 rows, u8 columns);
+void spatialGridInit(SpatialGrid* grid, u8 rows, u8 columns, u8 max_num_boxes);
 void spatialGridRelease(SpatialGrid* grid);
 
 void spatialGridIndex(SpatialGrid* grid, const Box_s16* object);

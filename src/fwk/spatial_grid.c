@@ -14,7 +14,7 @@
 
 static bool indexedInPosition(u8 columns, u8 rows, u8 column, u8 row, bool indexed_cells[columns][rows]);
 
-void spatialGridInit(SpatialGrid* grid, u8 rows, u8 columns) {
+void spatialGridInit(SpatialGrid* grid, u8 rows, u8 columns, u8 max_num_boxes) {
 
 	grid->rows = rows;
 	grid->columns = columns;
@@ -38,7 +38,7 @@ void spatialGridInit(SpatialGrid* grid, u8 rows, u8 columns) {
 			box->h = cell_height;
 			updateBoxMax(box);
 
-			doublyLinkedListInit(&grid->cells[row][column].e);
+			arrayFixedListInit(&grid->cells[row][column].e, max_num_boxes);
 		}
 	}
 }
@@ -52,7 +52,7 @@ void spatialGridRelease(SpatialGrid* grid) {
 	if (grid->cells) {
 		for (int row = 0; row < grid->rows; row++) {
 			for (int column = 0; column < grid->columns; column++) {
-				doublyLinkedListRelease(&grid->cells[row][column].e);
+				arrayFixedListRelease(&grid->cells[row][column].e);
 			}
 			MEM_free(grid->cells[row]);
 		}
@@ -97,7 +97,7 @@ void spatialGridIndex(SpatialGrid* grid, const Box_s16* object) {
 					if (combined_adjacents == 3) {
 
 						// easiest scenario, the box is present in 3 surrounding cell, hence also in this one
-						doublyLinkedListAdd(&grid->cells[row][column].e, object); // somehow using &cell.e passes a wrong address for the list
+						arrayFixedListAdd(&grid->cells[row][column].e, object);
 						already_indexed = TRUE;
 						indexed_cells[row][column] = TRUE;
 
@@ -115,7 +115,7 @@ void spatialGridIndex(SpatialGrid* grid, const Box_s16* object) {
 						} else {
 							overlaps_count++;
 							if (overlap(&cell.aabb, object)) {
-								doublyLinkedListAdd(&grid->cells[row][column].e, object); // somehow using &cell.e passes a wrong address for the list
+								arrayFixedListAdd(&grid->cells[row][column].e, object);
 								already_indexed = TRUE;
 								indexed_cells[row][column] = TRUE;
 							}
@@ -127,7 +127,7 @@ void spatialGridIndex(SpatialGrid* grid, const Box_s16* object) {
 				} else {
 					overlaps_count++;
 					if (overlap(&cell.aabb, object)) {
-						doublyLinkedListAdd(&grid->cells[row][column].e, object); // somehow using &cell.e passes a wrong address for the list
+						arrayFixedListAdd(&grid->cells[row][column].e, object);
 						already_indexed = TRUE;
 						indexed_cells[row][column] = TRUE;
 					}
