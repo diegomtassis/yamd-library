@@ -177,7 +177,7 @@ static void testPerformance() {
 		brute_force_time += getTimer(1, FALSE);
 
 		// spatial grid
-		startTimer(1);
+//		startTimer(1);
 
 		SpatialGrid spatial_grid;
 		spatialGridInit(&spatial_grid, rows, columns, num_boxes);

@@ -16,5 +16,6 @@ void testDataStructures();
 void testPhysics();
 void testSpatialGrid();
 void testPrinter();
+void testPerformanceC();
 
 #endif /* INC_TEST_SUITE_H_ */

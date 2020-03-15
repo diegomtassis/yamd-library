@@ -33,6 +33,10 @@ void runTest(const Config* config) {
 		testPrinter();
 		break;
 
+	case PERFORMACE_C:
+		testPerformanceC();
+		break;
+
 	default:
 		assert(FALSE, "Invalid test ");
 		break;
