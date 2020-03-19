@@ -123,8 +123,8 @@ static void testPerformance() {
 	u8 iterations = 10;
 	u8 num_boxes = 50;
 
-	u8 rows = 3;
-	u8 columns = 3;
+	u8 rows = 1;
+	u8 columns = 1;
 
 	turnPrinterOn();
 
@@ -199,22 +199,44 @@ static void testPerformance() {
 
 		startTimer(3);
 
-		for (u8 row = 0; row < rows; row++) {
-			for (u8 column = 0; column < columns; column++) {
-				for (u8 left_box = 0; left_box < num_boxes; left_box++) {
-					if (elements[left_box]) {
-						for (u8 right_box = left_box + 1; right_box < num_boxes; right_box++) {
-							if (elements[right_box]) {
-								overlap(&elements[left_box], &elements[right_box]);
+		Box_s16* left_box;
+		Box_s16* right_box;
+
+//		for (u8 row = 0; row < rows; row++) {
+//			for (u8 column = 0; column < columns; column++) {
+				for (u8 left_box_idx = 0; left_box_idx < size; left_box_idx++) {
+					left_box = &elements[left_box_idx];
+//					if (left_box) {
+						for (u8 right_box_idx = left_box_idx + 1; right_box_idx < size; right_box_idx++) {
+							right_box = &elements[right_box_idx];
+//							if (right_box) {
+								overlap(left_box, right_box);
 								grid_overlaps++;
-							}
+//							}
 						}
-					}
+//					}
 				}
-			}
-		}
+//			}
+//		}
 
 		spatial_grid_collisions_time += getTimer(3, FALSE);
+
+//		for (SpatialGridCell* cell = &spatial_grid.cells[0][0]; cell <= &spatial_grid.cells[rows][columns]; cell++) {
+//
+//			const void** elements = cell->e.e;
+//			u8 boxes_in_cell = cell->e.size;
+//
+//			for (u8 left_box = 0; left_box < boxes_in_cell; left_box++) {
+//				if (elements[left_box]) {
+//					for (u8 right_box = left_box + 1; right_box < boxes_in_cell; right_box++) {
+//						if (elements[right_box]) {
+//							overlap(&elements[left_box], &elements[right_box]);
+//							grid_overlaps++;
+//						}
+//					}
+//				}
+//			}
+//		}
 
 		// release the grid
 		spatialGridRelease(&spatial_grid);
@@ -227,10 +249,10 @@ static void testPerformance() {
 	println("Brute force overlaps: ");
 	sprintf(value, "%010lu", brute_force_overlaps);
 	println(value);
-	println("");
-	println("Spatial grid indexing time: ");
-	sprintf(value, "%010lu", spatial_grid_index_time);
-	println(value);
+//	println("");
+//	println("Spatial grid indexing time: ");
+//	sprintf(value, "%010lu", spatial_grid_index_time);
+//	println(value);
 	println("Spatial grid collisions time: ");
 	sprintf(value, "%010lu", spatial_grid_collisions_time);
 	println(value);

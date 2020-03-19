@@ -10,7 +10,7 @@
 #include <sys.h>
 #include <tools.h>
 
-void assert(bool clause, char* message) {
+void assert(bool clause, const char* message) {
 
 	if (!clause) {
 		KLog(message);

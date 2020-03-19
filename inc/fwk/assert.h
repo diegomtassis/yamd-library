@@ -10,6 +10,6 @@
 
 #include <types.h>
 
-void assert(bool, char*);
+void assert(bool, const char*);
 
 #endif /* INC_ASSERT_H_ */
