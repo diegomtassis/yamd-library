@@ -25,12 +25,12 @@ int main(u16 hard) {
 
 	initPrinter();
 
-	if (hard) {
-		printDisclaimer();
-		JOY_waitPress(JOY_1, BUTTON_BTN);
-		clearDisclaimer();
-		waitMs(50);
-	}
+//	if (hard) {
+//		printDisclaimer();
+//		JOY_waitPress(JOY_1, BUTTON_BTN);
+//		clearDisclaimer();
+//		waitMs(50);
+//	}
 
 	resetTileMemory();
 
