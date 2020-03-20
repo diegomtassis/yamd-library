@@ -155,7 +155,7 @@ static void testPerformance() {
 
 	for (u8 i = 0; i < iterations; i++) {
 
-		// prepare boxes
+// prepare boxes
 		for (u8 idx = 0; idx < num_boxes; idx++) {
 			box = &boxes[idx];
 			box->min.x = randomInRangeU16(0, screen_max.x);
@@ -164,17 +164,6 @@ static void testPerformance() {
 			box->h = randomInRangeU16(0, 32);
 			updateBoxMax(box);
 		}
-
-		// brute force
-		startTimer(1);
-		for (u8 left_box = 0; left_box < num_boxes; left_box++) {
-			for (u8 right_box = left_box + 1; right_box < num_boxes; right_box++) {
-				overlap(&boxes[left_box], &boxes[right_box]);
-				brute_force_overlaps++;
-			}
-		}
-
-		brute_force_time += getTimer(1, FALSE);
 
 		// spatial grid
 //		startTimer(1);
@@ -190,36 +179,55 @@ static void testPerformance() {
 //		spatial_grid_index_time += getTimer(1, TRUE);
 
 // collisions
-		ArrayFixedList* list = &spatial_grid.cells[0][0].e;
+		{
+			ArrayFixedList* list = &spatial_grid.cells[0][0].e;
 
-		u8 size = list->size;
-		const void** elements = list->e;
+			u8 size = list->size;
+//		u8 size = num_boxes;
+//		const void** elements = list->e;
 
-		assert(num_boxes == size, "wrong list size");
+//		u8* foo = MEM_alloc(sizeof(u8));
+//		memcpy(foo, &num_boxes, sizeof(*foo));
 
-		startTimer(3);
+			assert(num_boxes == size, "wrong list size");
 
-		Box_s16* left_box;
-		Box_s16* right_box;
+			startTimer(3);
+			for (u8 outer_idx = size; outer_idx; outer_idx--) {
+				for (u8 inner_idx = outer_idx - 1; inner_idx; inner_idx--) {
+					grid_overlaps++;
+				}
+			}
+			spatial_grid_collisions_time += getTimer(3, FALSE);
+
+//
+//			Box_s16* left_box;
+//			Box_s16* right_box;
 
 //		for (u8 row = 0; row < rows; row++) {
 //			for (u8 column = 0; column < columns; column++) {
-				for (u8 left_box_idx = 0; left_box_idx < size; left_box_idx++) {
-					left_box = &elements[left_box_idx];
+//				for (u16 left_box_idx = 0; left_box_idx < size; left_box_idx++) {
+//					left_box = &elements[left_box_idx];
 //					if (left_box) {
-						for (u8 right_box_idx = left_box_idx + 1; right_box_idx < size; right_box_idx++) {
-							right_box = &elements[right_box_idx];
+//						for (u16 right_box_idx = left_box_idx + 1; right_box_idx < size; right_box_idx++) {
+//							right_box = &elements[right_box_idx];
 //							if (right_box) {
-								overlap(left_box, right_box);
-								grid_overlaps++;
+//								overlap(left_box, right_box);
+//								grid_overlaps++;
 //							}
-						}
+//						}
 //					}
-				}
+//				}
 //			}
 //		}
+//
+//			for (u8 left_box = 0; left_box < size; left_box++) {
+//				for (u8 right_box = left_box + 1; right_box < size; right_box++) {
+//				overlap(&boxes[left_box], &boxes[right_box]);
+//					grid_overlaps++;
+//				}
+//			}
 
-		spatial_grid_collisions_time += getTimer(3, FALSE);
+		}
 
 //		for (SpatialGridCell* cell = &spatial_grid.cells[0][0]; cell <= &spatial_grid.cells[rows][columns]; cell++) {
 //
@@ -238,8 +246,23 @@ static void testPerformance() {
 //			}
 //		}
 
-		// release the grid
+// release the grid
 		spatialGridRelease(&spatial_grid);
+
+		{
+			// brute force
+			u8 size = num_boxes;
+			startTimer(1);
+			for (u8 left_box = size; left_box; left_box--) {
+				for (u8 right_box = left_box - 1; right_box; right_box--) {
+//				overlap(&boxes[left_box], &boxes[right_box]);
+					brute_force_overlaps++;
+				}
+			}
+
+			brute_force_time += getTimer(1, FALSE);
+		}
+
 	}
 
 	println("Time spent");
