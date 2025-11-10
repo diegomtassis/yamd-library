@@ -1,6 +1,5 @@
-out/*.o
-out/*.out
-out/rom_head.bin
-out/**/*.o
+out/
 src/boot/sega.s
 src/boot/rom_head.c
+.vscode/c_cpp_properties.json
+.vscode/settings.json

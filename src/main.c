@@ -18,7 +18,7 @@
 
 #define LOADING_TIME	3000
 
-int main(u16 hard) {
+int main(bool hard) {
 
 	VDP_setScreenWidth320();
 	VDP_setScreenHeight224();

@@ -1,3 +1,5 @@
+#include <genesis.h>
+
 #ifndef _RES_SPRITE_H_
 #define _RES_SPRITE_H_
 

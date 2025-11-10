@@ -10,6 +10,6 @@
 
 #include <types.h>
 
-void assert(bool, char*);
+void yamdl_assert(bool, char*);
 
 #endif /* INC_ASSERT_H_ */

@@ -60,7 +60,7 @@ static void runPhysicsSanbox() {
 	JOY_setEventHandler(joyEvent);
 	exit = FALSE;
 
-	VDP_setPalette(0, game_palette.data);
+	PAL_setPalette(0, game_palette.data, DMA_QUEUE);
 
 	// initialize the cross: object and sprite
 	cross.pos.x = FIX16(150);
@@ -143,7 +143,7 @@ static void runPhysicsSanbox() {
 
 		updateBox(&cross);
 
-		SPR_setPosition(cross_spr, fix16ToInt(cross.pos.x), fix16ToInt(cross.pos.y));
+		SPR_setPosition(cross_spr, F16_toInt(cross.pos.x), F16_toInt(cross.pos.y));
 
 		// handle overlapping with blue box
 		if (overlap(&cross.box, &blue_block.box)) {

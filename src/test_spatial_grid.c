@@ -74,9 +74,9 @@ static void testForBox(const Box_s16* object, u8 rows, u8 columns, bool expected
 	SpatialGrid spatial_grid;
 	spatialGridInit(&spatial_grid, rows, columns);
 
-	assert(spatial_grid.rows == rows, "wrong size");
-	assert(spatial_grid.columns == columns, "wrong size");
-	assert(spatial_grid.cells != 0, "memory for lists not allocated");
+	yamdl_assert(spatial_grid.rows == rows, "wrong size");
+	yamdl_assert(spatial_grid.columns == columns, "wrong size");
+	yamdl_assert(spatial_grid.cells != 0, "memory for lists not allocated");
 	println("Initialized spatial grid");
 	printSpatialGridLayout(&spatial_grid);
 	println("");
@@ -87,7 +87,7 @@ static void testForBox(const Box_s16* object, u8 rows, u8 columns, bool expected
 
 	for (int row = 0; row < rows; row++) {
 		for (int column = 0; column < columns; column++) {
-			assert(expected[row][column] == spatial_grid.cells[row][column].e.count, "wrong count for cell");
+			yamdl_assert(expected[row][column] == spatial_grid.cells[row][column].e.count, "wrong count for cell");
 		}
 	}
 
@@ -98,9 +98,9 @@ static void testForBox(const Box_s16* object, u8 rows, u8 columns, bool expected
 
 	// release the grid
 	spatialGridRelease(&spatial_grid);
-	assert(spatial_grid.rows == 0, "wrong size");
-	assert(spatial_grid.columns == 0, "wrong size");
-	assert(!spatial_grid.cells, "memory for lists not released");
+	yamdl_assert(spatial_grid.rows == 0, "wrong size");
+	yamdl_assert(spatial_grid.columns == 0, "wrong size");
+	yamdl_assert(!spatial_grid.cells, "memory for lists not released");
 	println("Released spatial grid");
 
 	printerWait(5000);

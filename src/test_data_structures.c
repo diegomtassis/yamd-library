@@ -39,31 +39,31 @@ static void testFixedList() {
 	ArrayFixedList arrayList;
 
 	arrayFixedListInit(&arrayList, 5);
-	assert(arrayList.size == 5, "wrong size");
-	assert(arrayList.count == 0, "wrong count");
-	assert(arrayList.e != 0, "array not initialized");
+	yamdl_assert(arrayList.size == 5, "wrong size");
+	yamdl_assert(arrayList.count == 0, "wrong count");
+	yamdl_assert(arrayList.e != 0, "array not initialized");
 	println("Created array fixed list");
 	printFixedListState(&arrayList);
 	printerWait(1500);
 
 	char* foo = "foo";
 	arrayFixedListAdd(&arrayList, foo);
-	assert(arrayList.count == 1, "wrong size");
-	assert(arrayList.e[0] == foo, "element not added");
+	yamdl_assert(arrayList.count == 1, "wrong size");
+	yamdl_assert(arrayList.e[0] == foo, "element not added");
 	println("Added \"foo\"");
 	printFixedListState(&arrayList);
 	printerWait(1500);
 
 	char* bar = "bar";
 	arrayFixedListAdd(&arrayList, bar);
-	assert(arrayList.count == 2, "wrong size");
-	assert(arrayList.e[1] == bar, "element not added");
+	yamdl_assert(arrayList.count == 2, "wrong size");
+	yamdl_assert(arrayList.e[1] == bar, "element not added");
 	println("Added \"bar\"");
 	printFixedListState(&arrayList);
 	printerWait(1500);
 
 	s16 found = arrayFixedListFind(&arrayList, foo);
-	assert(found == 0, "wrong element found");
+	yamdl_assert(found == 0, "wrong element found");
 	print("Found \"foo\" in index: ");
 	char value[5];
 	sprintf(value, "%d", found);
@@ -72,13 +72,13 @@ static void testFixedList() {
 	printerWait(1500);
 
 	found = arrayFixedListFind(&arrayList, "foobar");
-	assert(found == -1, "element found");
+	yamdl_assert(found == -1, "element found");
 	println("Looking for \"foobar\". Not found");
 	printFixedListState(&arrayList);
 	printerWait(1500);
 
 	found = arrayFixedListFindEmpty(&arrayList);
-	assert(2 == found, "wrong index");
+	yamdl_assert(2 == found, "wrong index");
 	print("Looking for first empty element. Found at position: ");
 	sprintf(value, "%d", found);
 	println(value);
@@ -86,24 +86,24 @@ static void testFixedList() {
 	printerWait(1500);
 
 	arrayFixedListRemoveAt(&arrayList, 0);
-	assert(arrayList.count == 1, "wrong size");
-	assert(!arrayList.e[0], "element not removed");
+	yamdl_assert(arrayList.count == 1, "wrong size");
+	yamdl_assert(!arrayList.e[0], "element not removed");
 	println("Removed element at position 0");
 	printFixedListState(&arrayList);
 	printerWait(1500);
 
 	char* foobar = "foobar";
 	arrayFixedListAdd(&arrayList, foobar);
-	assert(arrayList.count == 2, "wrong size");
-	assert(arrayList.e[0] == foobar, "element not added");
+	yamdl_assert(arrayList.count == 2, "wrong size");
+	yamdl_assert(arrayList.e[0] == foobar, "element not added");
 	println("Added \"foobar\"");
 	printFixedListState(&arrayList);
 	printerWait(1500);
 
 	arrayFixedListRelease(&arrayList);
-	assert(arrayList.size == 0, "wrong size");
-	assert(arrayList.count == 0, "wrong count");
-	assert(!arrayList.e, "array not released");
+	yamdl_assert(arrayList.size == 0, "wrong size");
+	yamdl_assert(arrayList.count == 0, "wrong count");
+	yamdl_assert(!arrayList.e, "array not released");
 	println("Released list");
 	printFixedListState(&arrayList);
 
@@ -123,9 +123,9 @@ static void testDoublyLinkedList() {
 	DoublyLinkedList doublyLinkedList;
 
 	doublyLinkedListInit(&doublyLinkedList);
-	assert(doublyLinkedList.count == 0, "wrong count");
-	assert(!doublyLinkedList.first, "wrong first");
-	assert(!doublyLinkedList.last, "wrong last");
+	yamdl_assert(doublyLinkedList.count == 0, "wrong count");
+	yamdl_assert(!doublyLinkedList.first, "wrong first");
+	yamdl_assert(!doublyLinkedList.last, "wrong last");
 	println("Created doubly linked list");
 	printDoublyLinkedListState(&doublyLinkedList);
 	println("");
@@ -134,12 +134,12 @@ static void testDoublyLinkedList() {
 	DoublyLinkedListNode* node;
 	char* foo = "foo";
 	node = doublyLinkedListAdd(&doublyLinkedList, foo);
-	assert(doublyLinkedList.count == 1, "wrong count");
-	assert(doublyLinkedList.first == node, "wrong first");
-	assert(doublyLinkedList.last == node, "wrong last");
-	assert(node->e == foo, "wrong element");
-	assert(!node->prev, "wrong prev");
-	assert(!node->next, "wrong next");
+	yamdl_assert(doublyLinkedList.count == 1, "wrong count");
+	yamdl_assert(doublyLinkedList.first == node, "wrong first");
+	yamdl_assert(doublyLinkedList.last == node, "wrong last");
+	yamdl_assert(node->e == foo, "wrong element");
+	yamdl_assert(!node->prev, "wrong prev");
+	yamdl_assert(!node->next, "wrong next");
 	println("Added \"foo\"");
 	printDoublyLinkedListState(&doublyLinkedList);
 	println("");
@@ -147,31 +147,31 @@ static void testDoublyLinkedList() {
 
 	char* bar = "bar";
 	node = doublyLinkedListAdd(&doublyLinkedList, bar);
-	assert(node->e == bar, "wrong element");
-	assert(node->prev && node->prev->e == foo, "wrong prev");
-	assert(!node->next, "wrong next");
-	assert(doublyLinkedList.count == 2, "wrong count");
-	assert(doublyLinkedList.last == node, "wrong last");
-	assert(doublyLinkedList.first->e == foo, "wrong first");
+	yamdl_assert(node->e == bar, "wrong element");
+	yamdl_assert(node->prev && node->prev->e == foo, "wrong prev");
+	yamdl_assert(!node->next, "wrong next");
+	yamdl_assert(doublyLinkedList.count == 2, "wrong count");
+	yamdl_assert(doublyLinkedList.last == node, "wrong last");
+	yamdl_assert(doublyLinkedList.first->e == foo, "wrong first");
 	println("Added \"bar\"");
 	printDoublyLinkedListState(&doublyLinkedList);
 	println("");
 	printerWait(1500);
 
 	DoublyLinkedListNode* found = doublyLinkedListFind(&doublyLinkedList, foo);
-	assert(found != 0, "not found");
-	assert(found->e == foo, "found wrong node");
+	yamdl_assert(found != 0, "not found");
+	yamdl_assert(found->e == foo, "found wrong node");
 	println("Found \"foo\"");
 	printDoublyLinkedListState(&doublyLinkedList);
 	println("");
 	printerWait(1500);
 
 	doublyLinkedListRemove(&doublyLinkedList, found);
-	assert(doublyLinkedList.count == 1, "wrong count");
-	assert(doublyLinkedList.first->e == bar, "wrong first");
-	assert(doublyLinkedList.last->e == bar, "wrong last");
-	assert(!doublyLinkedList.first->prev, "wrong bar prev");
-	assert(!doublyLinkedList.first->next, "wrong bar next");
+	yamdl_assert(doublyLinkedList.count == 1, "wrong count");
+	yamdl_assert(doublyLinkedList.first->e == bar, "wrong first");
+	yamdl_assert(doublyLinkedList.last->e == bar, "wrong last");
+	yamdl_assert(!doublyLinkedList.first->prev, "wrong bar prev");
+	yamdl_assert(!doublyLinkedList.first->next, "wrong bar next");
 	println("Removed element successfully");
 	printDoublyLinkedListState(&doublyLinkedList);
 	println("");
@@ -179,21 +179,21 @@ static void testDoublyLinkedList() {
 
 	char* foobar = "foobar";
 	node = doublyLinkedListAdd(&doublyLinkedList, foobar);
-	assert(node->e == foobar, "wrong element");
-	assert(node->prev && node->prev->e == bar, "wrong prev");
-	assert(!node->next, "wrong next");
-	assert(doublyLinkedList.count == 2, "wrong count");
-	assert(doublyLinkedList.last == node, "wrong last");
-	assert(doublyLinkedList.first->e == bar, "wrong first");
+	yamdl_assert(node->e == foobar, "wrong element");
+	yamdl_assert(node->prev && node->prev->e == bar, "wrong prev");
+	yamdl_assert(!node->next, "wrong next");
+	yamdl_assert(doublyLinkedList.count == 2, "wrong count");
+	yamdl_assert(doublyLinkedList.last == node, "wrong last");
+	yamdl_assert(doublyLinkedList.first->e == bar, "wrong first");
 	println("Added \"foobar\"");
 	printDoublyLinkedListState(&doublyLinkedList);
 	println("");
 	printerWait(1500);
 
 	doublyLinkedListRelease(&doublyLinkedList);
-	assert(doublyLinkedList.count == 0, "wrong count");
-	assert(!doublyLinkedList.first, "wrong first");
-	assert(!doublyLinkedList.last, "wrong last");
+	yamdl_assert(doublyLinkedList.count == 0, "wrong count");
+	yamdl_assert(!doublyLinkedList.first, "wrong first");
+	yamdl_assert(!doublyLinkedList.last, "wrong last");
 	println("Released list");
 	printDoublyLinkedListState(&doublyLinkedList);
 

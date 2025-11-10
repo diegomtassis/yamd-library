@@ -14,7 +14,7 @@
 
 void runTest(const Config* config) {
 
-	assert(config->test, "No test set");
+	yamdl_assert(config->test, "No test set");
 
 	switch (config->test) {
 	case DATA_STRUCTURES:
@@ -34,7 +34,7 @@ void runTest(const Config* config) {
 		break;
 
 	default:
-		assert(FALSE, "Invalid test ");
+		yamdl_assert(FALSE, "Invalid test ");
 		break;
 	}
 }

@@ -10,7 +10,7 @@
 #include <sys.h>
 #include <tools.h>
 
-void assert(bool clause, char* message) {
+void yamdl_assert(bool clause, char* message) {
 
 	if (!clause) {
 		KLog(message);

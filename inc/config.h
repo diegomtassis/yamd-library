@@ -8,14 +8,7 @@
 #ifndef INC_CONFIG_H_
 #define INC_CONFIG_H_
 
-#include "elements.h"
-
-typedef enum {
-	DATA_STRUCTURES = 1, //
-	PHYSICS, //
-	SPATIAL_GRID, //
-	PRINTER, //
-} Utility;
+typedef struct Config Config;
 
 void initConfig();
 const Config* setUpTest();

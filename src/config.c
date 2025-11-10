@@ -6,6 +6,7 @@
  */
 
 #include "../inc/config.h"
+#include "../inc/elements.h"
 
 #include <genesis.h>
 
@@ -90,7 +91,7 @@ static void setUpDefaults() {
 
 static void initConfigScreen() {
 
-	VDP_setPalette(PAL1, palette_grey);
+	PAL_setPalette(PAL1, palette_grey, DMA_QUEUE);
 	VDP_setTextPalette(PAL1);
 	VDP_setTextPriority(0);
 
@@ -99,7 +100,7 @@ static void initConfigScreen() {
 
 static void clearConfigScreen() {
 
-	VDP_clearTextAreaBG(PLAN_A, 0, 5, 32, 25); // don't clear the HUD
+	VDP_clearTextAreaBG(VDP_BG_A, 0, 5, 32, 25); // don't clear the HUD
 	VDP_setHilightShadow(FALSE);
 }
 
@@ -156,7 +157,7 @@ static void changeTest(Config config[static 1]) {
 		break;
 
 	default:
-		assert(FALSE, "Invalid test ");
+ 		yamdl_assert(FALSE, "Invalid test ");
 		break;
 	}
 }

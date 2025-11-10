@@ -10,10 +10,17 @@
 
 #include <genesis.h>
 
+typedef enum {
+	DATA_STRUCTURES = 1, //
+	PHYSICS, //
+	SPATIAL_GRID, //
+	PRINTER, //
+} Utility;
+
 typedef struct Config Config;
 
 struct Config {
-	u8 test;
+	Utility test;
 };
 
 #endif /* INC_ELEMENTS_H_ */
