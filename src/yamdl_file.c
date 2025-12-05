@@ -24,7 +24,7 @@ void printDisclaimer() {
 
 	println("");
 	println("");
-	print("Written by Diego Martin, 2019");
+	print("Written by Diego Martin, 2019-2025");
 	printerWait(WAIT_750);
 
 	println("");
